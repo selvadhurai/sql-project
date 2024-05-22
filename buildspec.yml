@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+     # - psql --version
+      - sudo apt update -y
+      - sudo apt install -y postgresql
+      
+  build:
+    commands:
+      - pwd
+      # Verify libpq installation
+      - psql --version
+      # - sudo amazon-linux-extras enable epel
+      # - sudo yum install postgresql-devel
+      # - sudo yum install -y libpq
+      # - psql --version
+      # - yum list available | grep postgresql
+      # - yum list installed | grep libpq
+      # - rpm -qa | grep libpq
+      # - dpkg -l | grep libpq
+      - ls -la
+      # - psql -h "sd-db1.c76o4qoeq8xw.us-east-1.rds.amazonaws.com" -U "postgres" -d "sd_firstdb" -c "SELECT 1;"
+      - . ./sd-script1.sh
