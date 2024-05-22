@@ -1,8 +1,8 @@
 #!/bin/bash
 # Database connection parameters
-DB_HOST="sd-db1.c76o4qoeq8xw.us-east-1.rds.amazonaws.com"
+DB_HOST="<>.us-east-1.rds.amazonaws.com"
 DB_PORT="5432"
-DB_NAME="sd_firstdb"
+DB_NAME="sample_db"
 DB_USER="postgres"
 DB_PASSWORD=$DB_PASSWORD
 # SQL script file
