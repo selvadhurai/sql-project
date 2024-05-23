@@ -5,23 +5,34 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-     # - psql --version
+      - echo "Installing PostgreSQL client"
       - sudo apt update -y
       - sudo apt install -y postgresql
       
-  build:
+  pre_build:
     commands:
+      - echo "Preparing environment"
+      - export PGPASSWORD="$DB_PASSWORD"
       - pwd
       # Verify libpq installation
       - psql --version
-      # - sudo amazon-linux-extras enable epel
-      # - sudo yum install postgresql-devel
-      # - sudo yum install -y libpq
-      # - psql --version
-      # - yum list available | grep postgresql
-      # - yum list installed | grep libpq
       # - rpm -qa | grep libpq
       # - dpkg -l | grep libpq
-      - ls -la
-      # - psql -h "sd-db1.c76o4qoeq8xw.us-east-1.rds.amazonaws.com" -U "postgres" -d "sd_firstdb" -c "SELECT 1;"
+      # - ls -la
+      # - psql -h "<rds>.amazonaws.com" -U "postgres" -d "sd_firstdb" -c "SELECT 1;"
+  build:
+    commands:
+      - echo "Running database script"
       - . ./sd-script1.sh
+        # Set Database connection parameters
+        #  DB_HOST="<rds>.amazonaws.com"
+        #  DB_PORT="5432"
+        #  DB_NAME="sd_firstdb"
+        #  DB_USER="postgres"
+        #  DB_PASSWORD="$DB_PASSWORD"
+        #  DB_PASSWORD="*****"
+        #  SQL_FILE="./release1.sql"
+        #  export PGPASSWORD="$DB_PASSWORD"
+
+        # Connect to the database
+        #  psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;"
