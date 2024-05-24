@@ -1,8 +1,8 @@
 #!/bin/bash
 # Database connection parameters
-DB_HOST="<>.us-east-1.rds.amazonaws.com"
+DB_HOST="selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
 DB_PORT="5432"
-DB_NAME="sample_db"
+DB_NAME="geneart"
 DB_USER="postgres"
 DB_PASSWORD=$DB_PASSWORD
 export PGPASSWORD="$DB_PASSWORD"
