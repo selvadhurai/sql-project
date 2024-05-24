@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 # Database connection parameters
 DB_HOST="selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
 DB_PORT="5432"
