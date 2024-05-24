@@ -23,7 +23,7 @@ phases:
   build:
     commands:
       - echo "Running database script"
-      - . ./sd-script1.sh
+      # - . ./sd-script1.sh
         # Set Database connection parameters
         #  DB_HOST="selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
         #  DB_PORT="5432"
@@ -35,4 +35,4 @@ phases:
         #  export PGPASSWORD="$DB_PASSWORD"
 
         # Connect to the database
-        #  psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;"
+      - psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;"
