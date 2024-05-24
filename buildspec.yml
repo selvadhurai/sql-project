@@ -8,6 +8,7 @@ phases:
       - echo "Installing PostgreSQL client"
       - sudo apt update -y
       - sudo apt install -y postgresql
+      - sudo apt install dnsutils
       
   pre_build:
     commands:
