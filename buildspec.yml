@@ -23,15 +23,13 @@ phases:
   build:
     commands:
       - echo "Running database script"
-     # - . ./sd-script1.sh
+      - . ./sd-script1.sh
      # Set Database connection parameters
       
-      - |
+     # - |
       
-        DB_HOST="selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
-        DB_PORT="5432"
-      - echo "Testing connectivity to the database host..."
-      - ping -c 4 "$DB_HOST"
+     #  DB_HOST="selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
+     # DB_PORT="5432"
      #   DB_NAME="geneart"
      #   DB_USER="postgres"
      #   DB_PASSWORD="$DB_PASSWORD"
