@@ -8,4 +8,4 @@
  --   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 --);
 -- select table
-select * from sd_table1;
+select * from 1;
