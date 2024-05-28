@@ -1,5 +1,11 @@
 version: 0.2
 
+env:
+      variables:
+        DB_HOST: "selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
+        DB_PORT: "5432"
+        DB_NAME: "geneart"
+        DB_USER: "postgres"
 phases:
   install:
     runtime-versions:
@@ -12,12 +18,6 @@ phases:
       
   pre_build:
     commands:
-    env:
-      variables:
-        DB_HOST: "selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
-        DB_PORT: "5432"
-        DB_NAME: "geneart"
-        DB_USER: "postgres"
       - echo "Preparing environment"
       - export PGPASSWORD="$DB_PASSWORD"
       - pwd
