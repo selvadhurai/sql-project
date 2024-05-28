@@ -6,8 +6,8 @@ phases:
       python: 3.8
     commands:
       - echo "Installing PostgreSQL client"
-      - sudo apt update -y
-      - sudo apt install -y postgresql
+      - apt update -y
+      - apt install -y postgresql
       # - sudo apt install dnsutils
       
   pre_build:
