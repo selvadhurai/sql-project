@@ -5,7 +5,8 @@ DB_HOST= ${DB_HOST:-default_value}
 DB_PORT="5432"
 DB_NAME="geneart"
 DB_USER="postgres"
-DB_PASSWORD=$DB_PASSWORD
+# DB_PASSWORD="$DB_PASSWORD"
+DB_PASSWORD="postgres"
 export PGPASSWORD="$DB_PASSWORD"
 # Check network connectivity
 echo "Testing connectivity to the database host..."
