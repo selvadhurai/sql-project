@@ -19,31 +19,19 @@ phases:
   pre_build:
     commands:
       - echo "Preparing environment"
-      - export PGPASSWORD="$DB_PASSWORD"
-      - pwd
-      # Verify libpq installation
-      - psql --version
-      # - rpm -qa | grep libpq
-      # - dpkg -l | grep libpq
-      # - ls -la
-      # - psql -h "<rds>.amazonaws.com" -U "postgres" -d "sd_firstdb" -c "SELECT 1;"
+      - export PGPASSWORD=$DB_PASSWORD  # Set PGPASSWORD for psql to use
+      - echo "Testing connectivity to the database host..."
+      - ping -c 4 "$DB_HOST"
+      - echo "Checking if database is ready..."
+      - pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER"
+      
   build:
     commands:
-   
-     # Set Database connection parameters
-      
-     - |
-      
-       DB_HOST="selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
-       DB_PORT="5432"
-       DB_NAME="geneart"
-       DB_USER="postgres"
-       DB_PASSWORD="$DB_PASSWORD"
-       export PGPASSWORD="$DB_PASSWORD"
-       echo "Running database script"
-     # DB_PASSWORD="postgres"
-     # SQL_FILE="./release1.sql"
-     # - . ./sd-script1.sh
-     # Connect to the database
-     - psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;"
+      - echo "Running database script"
+      - chmod +x ./sd-script1.sh  # Make sure the script is executable
+      - ./sd-script1.sh  # Execute the shell script
 
+artifacts:
+  files:
+    - sd-script1.sh
+    - release1.sql
