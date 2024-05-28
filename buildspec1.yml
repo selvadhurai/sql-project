@@ -6,10 +6,11 @@ phases:
       python: 3.8
     commands:
       - echo "Installing PostgreSQL client"
-      - sudo apt install -y https://download.postgresql.org/pub/repos/yum/14/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-      - sudo apt install -y postgresql14 postgresql14-server postgresql14-contrib postgresql14-libs
-      - sudo apt install -y iputils bind-utils  # Installing iputils for ping and bind-utils for nslookup/dig
- pre_build:
+      - sudo apt update -y
+      - sudo apt install -y postgresql
+      # - sudo apt install dnsutils
+
+  pre_build:
     commands:
     env:
       variables:
