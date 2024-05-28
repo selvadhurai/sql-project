@@ -1,0 +1,41 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - echo "Installing PostgreSQL client"
+      - sudo apt install -y https://download.postgresql.org/pub/repos/yum/14/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+      - sudo apt install -y postgresql14 postgresql14-server postgresql14-contrib postgresql14-libs
+      - sudo apt install -y iputils bind-utils  # Installing iputils for ping and bind-utils for nslookup/dig
+ pre_build:
+    commands:
+    env:
+      variables:
+        DB_HOST: "selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
+        DB_PORT: "5432"
+        DB_NAME: "geneart"
+        DB_USER: "postgres"
+        # DB_PASSWORD: "correct_password_here"  # Make sure this is correct
+
+  
+      - echo "Preparing environment"
+      - export PGPASSWORD=$DB_PASSWORD  # Setting PGPASSWORD for psql to use
+
+      # Check connectivity directly in the buildspec.yml
+      - echo "Testing connectivity to the database host..."
+      - ping -c 4 "$DB_HOST"
+      - echo "Checking if database is ready..."
+      - pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER"
+
+  build:
+    commands:
+      - echo "Running database script"
+      - chmod +x ./shscript.sh  # Make sure the script is executable
+      - . ./shscript.sh # Execute the shell script
+
+artifacts:
+  files:
+    - shscript.sh
+    - release1.sql
