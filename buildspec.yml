@@ -27,7 +27,7 @@ phases:
   build:
     commands:
       - echo "Running database script"
-      - chmod +x . ./sd-script1.sh  # Make sure the script is executable
+      # - chmod +x . ./sd-script1.sh  # Make sure the script is executable
       - . ./sd-script1.sh  # Execute the shell script
 
 artifacts:
