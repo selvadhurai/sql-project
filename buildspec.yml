@@ -24,4 +24,4 @@ phases:
   build:
     commands:
       # Set Database connection parameters
-      - . ./sd-script1.sh
+      - bash ./sd-script1.sh
