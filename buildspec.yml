@@ -12,6 +12,17 @@ phases:
       
   pre_build:
     commands:
+      - echo "Preparing environment"
+      - export PGPASSWORD="$DB_PASSWORD"
+      - pwd
+      # Verify libpq installation
+      - psql --version
+      # - rpm -qa | grep libpq
+      # - dpkg -l | grep libpq
+      # - ls -la
+      # - psql -h "<rds>.amazonaws.com" -U "postgres" -d "sd_firstdb" -c "SELECT 1;"
+  build:
+    commands:
     env:
       variables:
         DB_HOST: "selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
@@ -20,9 +31,15 @@ phases:
         DB_USER: "postgres"
       - echo "Preparing environment"
       - export PGPASSWORD=$DB_PASSWORD 
-
-      # Check connectivity directly in the buildspec.yml
-      - echo "Testing connectivity to the database host..."
-      - ping -c 4 "$DB_HOST"
-      - echo "Checking if database is ready..."
-      - pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER"
+     # Set Database connection parameters
+      
+     - |
+          
+       DB_PASSWORD="$DB_PASSWORD"
+       export PGPASSWORD="$DB_PASSWORD"
+       echo "Running database script"
+     # DB_PASSWORD="postgres"
+     # SQL_FILE="./release1.sql"
+     # - . ./sd-script1.sh
+     # Connect to the database
+     - psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;"
