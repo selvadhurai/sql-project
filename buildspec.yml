@@ -23,18 +23,15 @@ phases:
       # - psql -h "<rds>.amazonaws.com" -U "postgres" -d "sd_firstdb" -c "SELECT 1;"
   build:
     commands:
-    env:
-      variables:
-        DB_HOST: "selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
-        DB_PORT: "5432"
-        DB_NAME: "geneart"
-        DB_USER: "postgres"
-      - echo "Preparing environment"
-      - export PGPASSWORD=$DB_PASSWORD 
+   
      # Set Database connection parameters
       
      - |
-          
+      
+       DB_HOST="selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
+       DB_PORT="5432"
+       DB_NAME="geneart"
+       DB_USER="postgres"
        DB_PASSWORD="$DB_PASSWORD"
        export PGPASSWORD="$DB_PASSWORD"
        echo "Running database script"
@@ -43,3 +40,4 @@ phases:
      # - . ./sd-script1.sh
      # Connect to the database
      - psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;"
+
