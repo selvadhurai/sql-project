@@ -21,7 +21,6 @@ phases:
       - echo "Preparing environment"
       - export PGPASSWORD=$DB_PASSWORD  # Set PGPASSWORD for psql to use
       - echo "Testing connectivity to the database host..."
-      - ping -c 4 "$DB_HOST"
       - echo "Checking if database is ready..."
       - pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER"
       
