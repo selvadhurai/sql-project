@@ -35,4 +35,4 @@ phases:
        DB_PASSWORD="$DB_PASSWORD"
        export PGPASSWORD="$DB_PASSWORD"
        echo "Running database script"
-       . ./sd-script1.sh
+     - . ./sd-script1.sh
