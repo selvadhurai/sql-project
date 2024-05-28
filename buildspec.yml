@@ -33,10 +33,10 @@ phases:
        DB_NAME="geneart"
        DB_USER="postgres"
        DB_PASSWORD="$DB_PASSWORD"
-     # DB_PASSWORD="postgres"
-     #  SQL_FILE="./release1.sql"
        export PGPASSWORD="$DB_PASSWORD"
        echo "Running database script"
+     # DB_PASSWORD="postgres"
+     # SQL_FILE="./release1.sql"
      # - . ./sd-script1.sh
      # Connect to the database
      - psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;"
