@@ -37,6 +37,6 @@ phases:
      #  SQL_FILE="./release1.sql"
      #  export PGPASSWORD="$DB_PASSWORD"
      - echo "Running database script"
-     - . ./sd-script1.sh
+     # - . ./sd-script1.sh
      # Connect to the database
-     # - psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;"
+     - psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;"
