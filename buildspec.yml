@@ -29,6 +29,7 @@ phases:
       - git --version
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
       - cd sd_imgdb
+      - ls
       - echo Configuring Git...
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
