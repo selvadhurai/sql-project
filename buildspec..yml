@@ -1,0 +1,24 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.x
+  pre_build:
+    commands:
+      - echo Logging in to Amazon RDS...
+      - export PGPASSWORD=$DB_PASSWORD
+  build:
+    commands:
+      - echo Executing the SQL script...
+      - psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f /release.sql
+      - echo Renaming the script and moving to archive folder...
+      - mv /release.sql /release_$(date +%Y%m%d%H%M%S).sql
+      - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
+      - git config --global user.name "selva"
+      - git add release_*.sql
+      - git commit -m "Archiving executed script"
+      - git push
+artifacts:
+  files:
+    - archive/release_*.sql
