@@ -1,4 +1,8 @@
 version: 0.2
+env:
+  variables:
+    AWS_ROLE_ARN: "arn:aws:iam::aws:policy/AWSCodeCommitFullAccess"
+    AWS_ROLE_SESSION_NAME: "CodeBuildSession"
 
 phases:
   install:
@@ -10,6 +14,9 @@ phases:
       - sudo apt update -y
       - sudo apt install -y postgresql
       - sudo apt-get install -y awscli git
+      - export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' /tmp/assume-role-output)
+      - export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' /tmp/assume-role-output)
+      - export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' /tmp/assume-role-output)
       - git config --global credential.helper '!aws codecommit credential-helper $@'
       - git config --global credential.UseHttpPath true
       - export PGPASSWORD=$DB_PASSWORD
@@ -28,4 +35,5 @@ phases:
       - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
       - git add release_*.sql
       - git commit -m "Archiving executed script"
+      - echo Final statement...
       - git push
