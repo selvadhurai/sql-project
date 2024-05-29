@@ -15,12 +15,16 @@ phases:
       - echo Executing the SQL script...
       - psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f release1.sql
       - echo Renaming the script and moving to archive folder...
-      - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
+      - echo Cloning the repository...
+      - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
+      - cd sd_imgdb
+      - echo Configuring Git...
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
+      - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
       - git add release_*.sql
       - git commit -m "Archiving executed script"
       - git push
 artifacts:
   files:
-    - archive/release_*.sql
+    - release_*.sql
