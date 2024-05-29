@@ -1,7 +1,7 @@
 version: 0.2
 env:
   variables:
-    AWS_ROLE_ARN: "arn:aws:iam::aws:policy/AWSCodeCommitFullAccess"
+    AWS_ROLE_ARN: "arn:aws:iam::073139075499:policy/sd-codecommit"
     AWS_ROLE_SESSION_NAME: "CodeBuildSession"
 
 phases:
