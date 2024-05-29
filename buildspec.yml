@@ -13,7 +13,7 @@ phases:
   build:
     commands:
       - echo Executing the SQL script...
-      - psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f /release1.sql
+      - psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f release1.sql
       - echo Renaming the script and moving to archive folder...
       - mv /release1.sql /release_$(date +%Y%m%d%H%M%S).sql
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
