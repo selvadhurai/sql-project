@@ -4,8 +4,8 @@ DB_HOST="${DB_HOST}"
 DB_PORT="${DB_PORT}"
 DB_NAME="${DB_NAME}"
 DB_USER="${DB_USER}"
-DB_PASSWORD="postgres"
-# PGPASSWORD="${DB_PASSWORD}"  # Use the environment variable for password
+# DB_PASSWORD="postgres"
+PGPASSWORD="${DB_PASSWORD}"  # Use the environment variable for password
 SQL_FILE="./release1.sql"
 echo  "Selva": $DB_PASSWORD
 # Check if the database is ready
