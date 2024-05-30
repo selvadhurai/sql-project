@@ -7,7 +7,8 @@ DB_USER="${DB_USER}"
 # DB_PASSWORD="postgres"
 PGPASSWORD="${DB_PASSWORD}"  # Use the environment variable for password
 SQL_FILE="./release1.sql"
-echo  "Selva": $DB_PASSWORD
+echo  "Selva"
 # Check if the database is ready
-pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME"
-psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE"
+# pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME"
+pg_isready -h "$DB_HOST" -p "$DB_PORT"
+# psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE"
