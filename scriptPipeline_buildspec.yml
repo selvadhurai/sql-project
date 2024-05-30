@@ -1,11 +1,5 @@
 version: 0.2
 
-env:
-  variables:
-    DB_HOST: "selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
-    DB_PORT: "5432"
-    DB_NAME: "geneart"
-    DB_USER: "postgres"
 phases:
   install:
     runtime-versions:
@@ -19,9 +13,8 @@ phases:
   pre_build:
     commands:
       - echo "Preparing environment"
-      # - export PGPASSWORD="$DB_PASSWORD"
+      - export PGPASSWORD="$DB_PASSWORD"
       - pwd
-      # - echo "db password" $PGPASSWORD
       # Verify libpq installation
       - psql --version
       # - rpm -qa | grep libpq
@@ -31,7 +24,11 @@ phases:
   build:
     commands:
       # Set Database connection parameters
+      - DB_HOST="selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com"
+      - DB_PORT="5432"
+      - DB_NAME="geneart"
+      - DB_USER="postgres"
+      - DB_PASSWORD="$DB_PASSWORD"
+      - export PGPASSWORD="$DB_PASSWORD"
       - echo "Running database script"
-      - chmod +x ./sd-script1.sh
-      # - psql -q -h "selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com" -p "5432" -U "postgres" -d "geneart"  -f "release1.sql"
-      #  - bash ./sd-script1.sh
+      - bash ./sd-script1.sh
