@@ -25,5 +25,5 @@ phases:
     commands:
       # Set Database connection parameters
       - echo "Running database script"
-      - chmode +x ./sd-script1.sh
+      - chmod +x ./sd-script1.sh
       - bash ./sd-script1.sh
