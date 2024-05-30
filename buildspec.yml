@@ -19,8 +19,9 @@ phases:
   pre_build:
     commands:
       - echo "Preparing environment"
-      - export PGPASSWORD="$DB_PASSWORD"
+      # - export PGPASSWORD="$DB_PASSWORD"
       - pwd
+      - echo "db password" $PGPASSWORD
       # Verify libpq installation
       - psql --version
       # - rpm -qa | grep libpq
@@ -32,4 +33,4 @@ phases:
       # Set Database connection parameters
       - echo "Running database script"
       - chmod +x ./sd-script1.sh
-      - bash ./sd-script1.sh
+      #  - bash ./sd-script1.sh
