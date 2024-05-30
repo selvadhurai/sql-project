@@ -1,0 +1,29 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - echo "Installing PostgreSQL client"
+      - sudo apt update -y
+      - sudo apt install -y postgresql
+      # - sudo apt install dnsutils
+      
+  pre_build:
+    commands:
+      - echo "Preparing environment"
+      - export PGPASSWORD="$DB_PASSWORD"
+      - pwd
+      # Verify libpq installation
+      - psql --version
+      # - rpm -qa | grep libpq
+      # - dpkg -l | grep libpq
+      # - ls -la
+      # - psql -h "<rds>.amazonaws.com" -U "postgres" -d "sd_firstdb" -c "SELECT 1;"
+  build:
+    commands:
+      # Set Database connection parameters
+      - echo "Running database script"
+      - chmode +x ./sd-script1.sh
+      - bash ./sd-script1.sh
