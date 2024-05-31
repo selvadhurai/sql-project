@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOG_FILE="tmp/sd-script1.log"
+LOG_FILE="/tmp/sd-script1.log"
 
 #clear the log file if it exists
 > $LOG_FILE
