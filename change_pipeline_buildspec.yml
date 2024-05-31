@@ -20,21 +20,23 @@ phases:
       - git config --global credential.helper '!aws codecommit credential-helper $@'
       - git config --global credential.UseHttpPath true
       - export PGPASSWORD=$DB_PASSWORD
+      - SQL_FILE="./release/release1.sql"
   build:
     commands:
       - echo Executing the SQL script...
-      - psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f release1.sql
+      - psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f $SQL_FILE
       - echo Renaming the script and moving to archive folder...
       - echo Cloning the repository...
       - git --version
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-      - cd sd_imgdb
+      - cd sd_imgdb/release
       - ls
       - echo Configuring Git...
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
+      - git checkout stage
       - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
-      - git add release_*.sql
+      - git add ./archive/release_*.sql
       - git commit -m "Archiving executed script"
       - echo Final statement...
-      - git push
+      - git push origin stage #origin stage added
