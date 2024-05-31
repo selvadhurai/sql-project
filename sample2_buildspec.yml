@@ -33,6 +33,7 @@ phases:
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
       - ls -la  # List contents of the directory
+      - cd sd_imgdb
       - git branch -a  # List all branches
       - git init
       - git checkout release
