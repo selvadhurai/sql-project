@@ -3,9 +3,10 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.8
+      python: 3.x
+  pre_build:
     commands:
-      - echo "Installing PostgreSQL client"
+      - echo Logging in to Amazon RDS...
       - sudo apt update -y
       - sudo apt install -y postgresql
 
