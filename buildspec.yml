@@ -34,4 +34,12 @@ phases:
       - echo "Running database script"
       - chmod +x ./script/sd-script1.sh
       # - psql -q -h "selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com" -p "5432" -U "postgres" -d "geneart"  -f "release1.sql"
-      # - bash ./script/sd-script1.sh
+      - bash ./script/sd-script1.sh
+  post_build:
+    commands:
+      - echo "Displaying log file"
+      - cat /tmp/sd-script1.log
+
+artifacts:
+  files:
+    - /tmp/sd-script1.log
