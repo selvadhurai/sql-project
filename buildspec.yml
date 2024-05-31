@@ -24,7 +24,8 @@ phases:
       # - echo "db password" $PGPASSWORD
       # Verify libpq installation
       - psql --version
-      - mkdir -p /tmp
+      - mkdir -p /tmp  # Create the /tmp directory
+      - touch /tmp/sd-script1.log  # Create the log file
       # - rpm -qa | grep libpq
       # - dpkg -l | grep libpq
       # - ls -la
