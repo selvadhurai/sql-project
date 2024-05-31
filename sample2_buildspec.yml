@@ -40,7 +40,7 @@ phases:
       - cd release_sql
       - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
       - echo release script backedup..
-      - git add ./archive/release_*.sql
+      - git add archive/release_*.sql
       - git commit -m "Archiving executed script"
       - echo Final statement...
       - git push origin release #origin stage added
