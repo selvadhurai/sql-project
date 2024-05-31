@@ -40,8 +40,15 @@ phases:
       # - ls release_sql/*.sql
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
+<<<<<<< HEAD
       - echo Configuring Git...
       - git add release_*.sql
+=======
+      - git init
+      - git checkout release
+      - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
+      - git add ./archive/release_*.sql
+>>>>>>> release
       - git commit -m "Archiving executed script"
       - echo Final statement...
       - git push origin release #origin stage added
