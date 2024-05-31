@@ -29,11 +29,11 @@ phases:
       - echo Cloning the repository...
       # - git --version
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-      - cd release_sql
       - echo Configuring Git...
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
       - git checkout release
+      - cd release_sql
       - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
       - echo release script backedup..
       - git add ./archive/release_*.sql
