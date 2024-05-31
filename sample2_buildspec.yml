@@ -37,7 +37,7 @@ phases:
       - cd release_sql
       - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
       - echo release script backedup..
-      - ls release1.sql/*.sql
+      # - ls release_sql/*.sql
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
       - echo Configuring Git...
