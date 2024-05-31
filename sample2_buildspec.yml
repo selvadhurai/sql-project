@@ -13,8 +13,8 @@ phases:
   build:
     commands:
       # Identify previous version SQL script
-      - previous_sql_file=$(ls -1t release_sql/*.sql | tail -1)
-      - echo "Previous SQL file: $previous_sql_file"
-      
+      - echo "Running previous version SQL script"
+      - chmod +x ./script/previous_version.sh
+      - bash ./script/previous_version.sh
       # Connect to the database and run the SQL script
       # - psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$previous_sql_file"
