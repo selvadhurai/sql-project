@@ -32,6 +32,8 @@ phases:
       - echo Configuring Git...
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
+      - ls -la  # List contents of the directory
+      - git branch -a  # List all branches
       - git init
       - git checkout release
       - cd release_sql
