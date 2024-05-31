@@ -37,13 +37,11 @@ phases:
       - cd release_sql
       - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
       - echo release script backedup..
-      - echo Configuring Git...
-      - cp /tmp/release_sql/release1.sql archive/
-      # Check if the archive directory contains SQL files
-      - ls archive/*.sql
+      - ls release1.sql/*.sql
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
-      - git add archive/release_*.sql
+      - echo Configuring Git...
+      - git add release_*.sql
       - git commit -m "Archiving executed script"
       - echo Final statement...
       - git push origin release #origin stage added
