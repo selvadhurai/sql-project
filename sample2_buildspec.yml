@@ -20,7 +20,7 @@ phases:
       - git config --global credential.helper '!aws codecommit credential-helper $@'
       - git config --global credential.UseHttpPath true
       - export PGPASSWORD=$DB_PASSWORD
-      - SQL_FILE="./release/release1.sql"
+      - SQL_FILE="./release_sql/release1.sql"
   build:
     commands:
       - echo Executing the SQL script...
