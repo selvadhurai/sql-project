@@ -35,6 +35,7 @@ phases:
       - git config --global user.name "selva"
       - git checkout release
       - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
+      - echo release script backedup..
       - git add ./archive/release_*.sql
       - git commit -m "Archiving executed script"
       - echo Final statement...
