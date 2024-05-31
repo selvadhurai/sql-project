@@ -8,4 +8,4 @@
  --   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 --);
 -- select table
-select 1;
+select 1*
