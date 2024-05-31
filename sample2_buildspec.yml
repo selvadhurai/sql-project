@@ -1,3 +1,4 @@
+# Actual name is sample2_buildspec.yml for the pipeline same 2
 version: 0.2
 env:
   variables:
@@ -26,17 +27,23 @@ phases:
       - echo Executing the SQL script...
       - psql -q -h $DB_HOST -U $DB_USER -d $DB_NAME -f $SQL_FILE
       - echo Renaming the script and moving to archive folder...
-      - echo Cloning the repository...
+      - echo Cloning the repository... #test
       # - git --version
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-      - cd sd_imgdb/release_sql
-      - echo Configuring Git...
-      - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
-      - git config --global user.name "selva"
+      - ls -la  # List contents of the directory
+      - cd sd_imgdb
+      - git branch -a  # List all branches
       - git init
       - git checkout release
-      - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
-      - git add ./archive/release_*.sql
+      - cd release_sql
+      - cp release1.sql release_$(date +%Y%m%d%H%M%S).sql
+      # - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
+      - echo release script backedup..
+      # - ls release_sql/*.sql
+      - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
+      - git config --global user.name "selva"
+      - echo Configuring Git...
+      - git add release_*.sql
       - git commit -m "Archiving executed script"
       - echo Final statement...
       - git push origin release #origin stage added
