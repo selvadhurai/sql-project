@@ -32,6 +32,7 @@ phases:
       - echo Configuring Git...
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
+      - git init
       - git checkout release
       - cd release_sql
       - mv release1.sql release_$(date +%Y%m%d%H%M%S).sql
