@@ -2,7 +2,6 @@
 
 LOG_FILE="tmp/sd-script1.log"
 
-mkdir -p /tmp
 #clear the log file if it exists
 > $LOG_FILE
 echo "Starting script..." | tee -a $LOG_FILE

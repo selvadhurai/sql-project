@@ -24,6 +24,7 @@ phases:
       # - echo "db password" $PGPASSWORD
       # Verify libpq installation
       - psql --version
+      - mkdir -p /tmp
       # - rpm -qa | grep libpq
       # - dpkg -l | grep libpq
       # - ls -la
