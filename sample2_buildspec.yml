@@ -36,8 +36,8 @@ phases:
       - git init
       - git checkout release
       - cd release_sql
-      - cp release1.sql release_$(date +%Y%m%d%H%M%S).sql
-      - mv release1_*.sql archive
+      - cp release1.sql ../archive/release_$(date +%Y%m%d%H%M%S).sql
+      # - mv release1_*.sql archive
       - echo release script backedup..
       # - ls release_sql/*.sql
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
