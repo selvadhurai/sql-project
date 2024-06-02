@@ -43,7 +43,7 @@ phases:
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
       - echo Configuring Git...
-      - git add release_*.sql
-      - git commit -m "Archiving executed script"
+      - git add -a
+      - git commit -am "Archiving executed script"
       - echo Final statement...
       - git push origin release #origin stage added
