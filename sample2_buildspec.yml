@@ -34,18 +34,14 @@ phases:
       - if [ $? -eq 0 ]; then
           echo Renaming the script and moving to archive folder...
           echo Cloning the repository...
-          # - git --version
           git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-          # - ls -la  # List contents of the directory
           cd sd_imgdb
-          git branch -a  # List all branches
+          git branch -a
           git init
           git checkout release
           cd release_sql
           cp release1.sql ../archive/release_$(date +%Y%m%d%H%M%S).sql
-          # - mv release1_*.sql archive
           echo release script backedup..
-          # - ls release_sql/*.sql
           git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
           git config --global user.name "selva"
           echo Configuring Git...
