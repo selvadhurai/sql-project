@@ -33,8 +33,8 @@ phases:
       - |
       - if [ $? -eq 0 ]; then
           echo Renaming the script and moving to archive folder...
-          echo Cloning the repository... #test
-    # - git --version
+          echo Cloning the repository...
+          # - git --version
           git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
           # - ls -la  # List contents of the directory
           cd sd_imgdb
