@@ -19,7 +19,7 @@ SQL_FILE="./release_sql/release1.sql"
 # psql -q -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE"
 pg_isready -h "$DB_HOST" -p "$DB_PORT" | tee -a $LOG_FILE
 if [ $? -eq 0 ]; then
-    echo "Database is ready. Executing SQL file..."
+    echo "Database is ready. Executing SQL file..." | tee -a $LOG_FILE
     # Execute the SQL file
     psql -q -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE" | tee -a $LOG_FILE
     if [ $? -eq 0 ]; then
