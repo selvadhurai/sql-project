@@ -9,6 +9,7 @@ phases:
       - echo Logging in to Amazon RDS...
       - sudo apt update -y
       - sudo apt install -y postgresql
+      - touch /tmp/sd-script1.log
 
   build:
     commands:
@@ -18,3 +19,11 @@ phases:
       - bash ./script/previous_version.sh
       # Connect to the database and run the SQL script
       # - psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$previous_sql_file"
+   post_build:
+    commands:
+      - echo "Displaying log file"
+      - cat /tmp/sd-script1.log
+
+artifacts:
+  files:
+    - /tmp/sd-script1.log
