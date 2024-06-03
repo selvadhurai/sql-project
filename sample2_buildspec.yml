@@ -29,27 +29,33 @@ phases:
       # - psql -q -h $DB_HOST -U $DB_USER -d $DB_NAME -f $SQL_FILE
       - chmod +x ./script/sd-script1.sh
       - bash ./script/sd-script1.sh
-      - echo Renaming the script and moving to archive folder...
-      - echo Cloning the repository... #test
-      # - git --version
-      - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-      - ls -la  # List contents of the directory
-      - cd sd_imgdb
-      - git branch -a  # List all branches
-      - git init
-      - git checkout release
-      - cd release_sql
-      - cp release1.sql ../archive/release_$(date +%Y%m%d%H%M%S).sql
-      # - mv release1_*.sql archive
-      - echo release script backedup..
-      # - ls release_sql/*.sql
-      - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
-      - git config --global user.name "selva"
-      - echo Configuring Git...
-      - git add -A
-      - git commit -am "Archiving executed script"
-      - echo Final statement...
-      - git push origin release #origin stage added
+      # hanling if condition added 06/02/2024
+      - if [ $? -eq 0 ]; then
+          echo Renaming the script and moving to archive folder...
+          echo Cloning the repository... #test
+          # - git --version
+          git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
+          # - ls -la  # List contents of the directory
+          cd sd_imgdb
+          git branch -a  # List all branches
+          git init
+          git checkout release
+          cd release_sql
+          cp release1.sql ../archive/release_$(date +%Y%m%d%H%M%S).sql
+          # - mv release1_*.sql archive
+          echo release script backedup..
+          # - ls release_sql/*.sql
+          git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
+          git config --global user.name "selva"
+          echo Configuring Git...
+          git add -A
+          git commit -am "Archiving executed script"
+          echo Final statement...
+          git push origin release #origin stage added
+        else
+          echo "SQL script failed. Not archiving.";
+          exit 1;
+        fi  
   post_build:
     commands:
       - echo "Displaying log file"
