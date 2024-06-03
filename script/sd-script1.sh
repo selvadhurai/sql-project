@@ -24,6 +24,7 @@ if [ $? -eq 0 ]; then
     psql -q -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE" | tee -a $LOG_FILE
     if [ $? -eq 0 ]; then
         echo "SQL file executed successfully" | tee -a $LOG_FILE
+        exit 0
     else
         echo "Error executing SQL file" | tee -a $LOG_FILE
         exit 1
@@ -34,3 +35,4 @@ else
 fi
 
 echo "Script compeleted successfully." | tee -a $LOG_FILE
+exit 0
