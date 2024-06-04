@@ -12,7 +12,7 @@ DB_NAME="${DB_NAME}"
 DB_USER="${DB_USER}"
 
  # Identify previous version SQL script
- SQL_FILE=$(ls -1t archive/*.sql | tail -1)
+ SQL_FILE=$(ls -1t archive/*.sql | tail -2)
  echo "Previous SQL file: $SQL_FILE"
 
   pg_isready -h "$DB_HOST" -p "$DB_PORT" | tee -a $LOG_FILE
