@@ -1,4 +1,11 @@
+# 3rd version
+
+# Actual name is sample2_buildspec.yml for the pipeline same 2
 version: 0.2
+env:
+  variables:
+    AWS_ROLE_ARN: "arn:aws:iam::073139075499:policy/sd-codecommit"
+    AWS_ROLE_SESSION_NAME: "CodeBuildSession"
 
 phases:
   install:
@@ -9,16 +16,49 @@ phases:
       - echo Logging in to Amazon RDS...
       - sudo apt update -y
       - sudo apt install -y postgresql
+      - sudo apt-get install -y awscli git
+      - export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' /tmp/assume-role-output)
+      - export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' /tmp/assume-role-output)
+      - export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' /tmp/assume-role-output)
+      - git config --global credential.helper '!aws codecommit credential-helper $@'
+      - git config --global credential.UseHttpPath true
+      - export PGPASSWORD=$DB_PASSWORD
+      - SQL_FILE="./release_sql/release1.sql"
       - touch /tmp/sd-script1.log
-
   build:
     commands:
-      # Identify previous version SQL script
-      - echo "Running previous version SQL script"
-      - chmod +x ./script/previous_version.sh
-      - bash ./script/previous_version.sh
-      # Connect to the database and run the SQL script
-      # - psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$previous_sql_file"
+      - echo Executing the SQL script...
+      # - psql -q -h $DB_HOST -U $DB_USER -d $DB_NAME -f $SQL_FILE
+      - chmod +x ./script/sd-script1.sh
+      - bash ./script/sd-script1.sh
+      # hanling if condition added 06/02/2024
+      - |
+        if [ $? -eq 0 ]; then
+          echo Renaming the script and moving to archive folder...
+          echo Cloning the repository...
+          # - git --version
+          git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
+          # - ls -la  # List contents of the directory
+          cd sd_imgdb/release_sql
+          # git branch -a  # List all branches
+          # git init
+          # git checkout release
+          # cd release_sql
+          cp release1.sql ../archive/release_$(date +%Y%m%d%H%M%S).sql
+          # - mv release1_*.sql archive
+          echo release script backedup..
+          # - ls release_sql/*.sql
+          git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
+          git config --global user.name "selva"
+          echo Configuring Git...
+          git add "release_*.sql"
+          git commit -am "Archiving executed script"
+          echo Final statement...
+          git push #origin stage added
+        else
+          echo "SQL script failed. Not archiving.";
+          exit 1;
+        fi  
   post_build:
     commands:
       - echo "Displaying log file"
