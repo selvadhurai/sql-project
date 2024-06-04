@@ -51,7 +51,7 @@ phases:
           git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
           git config --global user.name "selva"
           echo Configuring Git...
-          git add "release_*.sql"
+          git add -A
           git commit -am "Archiving executed script"
           echo Final statement...
           git push #origin stage added
