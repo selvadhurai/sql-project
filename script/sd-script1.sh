@@ -21,12 +21,13 @@ pg_isready -h "$DB_HOST" -p "$DB_PORT" | tee -a $LOG_FILE
 if [ $? -eq 0 ]; then
     echo "Database is ready. Executing SQL file..." | tee -a $LOG_FILE
     # Execute the SQL file
-    psql -q -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE" | tee -a $LOG_FILE
+    psql -q -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE" &> /tmp/psql_output.log
     if [ $? -eq 0 ]; then
         echo "SQL file executed successfully" | tee -a $LOG_FILE
-        exit 0
+        cat /tmp/psql_output.log | tee -a $LOG_FILE
     else
         echo "Error executing SQL file" | tee -a $LOG_FILE
+        cat /tmp/psql_output.log | tee -a $LOG_FILE
         exit 1
     fi
 else
