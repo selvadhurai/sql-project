@@ -60,8 +60,15 @@ phases:
         fi  
   post_build:
     commands:
-      - echo "Displaying log file"
-      - cat /tmp/sd-script1.log
+      - echo "Cloning the repository for log file storage..."
+      - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
+      - cd sd_imgdb
+      - cp /tmp/sd-script1.log Logs/sd-script1_$(date +%Y%m%d%H%M%S).log
+      - echo "Log file stored in Logs folder..."
+      - git add -A
+      - git commit -m "Adding log file for the executed script"
+      - git push
+      - echo "Log file has been pushed to the repository."
 
 artifacts:
   files:
