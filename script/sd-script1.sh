@@ -22,13 +22,14 @@ if [ $? -eq 0 ]; then
     echo "Database is ready. Executing SQL file..." | tee -a $LOG_FILE
     # Execute the SQL file
     psql -q -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE" &> /tmp/psql_output.log
-    if [ $? -eq 0 ]; then
-        echo "SQL file executed successfully" | tee -a $LOG_FILE
-        cat /tmp/psql_output.log | tee -a $LOG_FILE
-    else
+    # Check for errors in the psql output
+    if grep -i "ERROR" /tmp/psql_output.log; then
         echo "Error executing SQL file" | tee -a $LOG_FILE
         cat /tmp/psql_output.log | tee -a $LOG_FILE
         exit 1
+    else
+        echo "SQL file executed successfully" | tee -a $LOG_FILE
+        cat /tmp/psql_output.log | tee -a $LOG_FILE
     fi
 else
     echo "Database is not ready or authentication failed. Transaction terminated." | tee -a $LOG_FILE
