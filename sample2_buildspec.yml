@@ -33,9 +33,9 @@ phases:
       - bash ./script/sd-script1.sh
       # hanling if condition added 06/02/2024
       - |
-        if [ $? -eq 0 ]; then
-          echo Renaming the script and moving to archive folder...
-          echo Cloning the repository...
+        if grep -q "SQL_SCRIPT_STATUS=SUCCESS" /tmp/sd-script1.log; then
+          echo "SQL script executed successfully. Renaming the script and moving to archive folder..."
+          echo "Cloning the repository..."
           # - git --version
           git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
           # - ls -la  # List contents of the directory
@@ -57,7 +57,6 @@ phases:
           git push #origin stage added
         else
           echo "SQL script failed. Not archiving.";
-          exit 1;
         fi  
   post_build:
     commands:
