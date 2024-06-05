@@ -26,15 +26,16 @@ if [ $? -eq 0 ]; then
     if grep -i "ERROR" /tmp/psql_output.log; then
         echo "Error executing SQL file" | tee -a $LOG_FILE
         cat /tmp/psql_output.log | tee -a $LOG_FILE
-        echo "SQL_SCRIPT_STATUS=FAILED" >> /tmp/sd-script1.log
+        echo "SQL_SCRIPT_STATUS=FAILED" >> $LOG_FILE
         exit 0
     else
         echo "SQL file executed successfully" | tee -a $LOG_FILE
         cat /tmp/psql_output.log | tee -a $LOG_FILE
+        echo "SQL_SCRIPT_STATUS=SUCCESS" >> $LOG_FILE
     fi
 else
     echo "Database is not ready or authentication failed. Transaction terminated." | tee -a $LOG_FILE
-    echo "SQL_SCRIPT_STATUS=FAILED" >> /tmp/sd-script1.log
+    echo "SQL_SCRIPT_STATUS=FAILED" >> $LOG_FILE
     exit 0
 fi
 

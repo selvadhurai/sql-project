@@ -11,7 +11,6 @@ phases:
   install:
     runtime-versions:
       python: 3.x
-  pre_build:
     commands:
       - echo Logging in to Amazon RDS...
       - sudo apt update -y
@@ -23,15 +22,18 @@ phases:
       - git config --global credential.helper '!aws codecommit credential-helper $@'
       - git config --global credential.UseHttpPath true
       - export PGPASSWORD=$DB_PASSWORD
-      - SQL_FILE="./release_sql/release1.sql"
       - touch /tmp/sd-script1.log
+  pre_build:
+    commands:
+      - SQL_FILE="./release_sql/release1.sql"
+      
   build:
     commands:
       - echo Executing the SQL script...
-      # - psql -q -h $DB_HOST -U $DB_USER -d $DB_NAME -f $SQL_FILE
       - chmod +x ./script/sd-script1.sh
       - bash ./script/sd-script1.sh
-      # hanling if condition added 06/02/2024
+  post_build:
+    commands:
       - |
         if grep -q "SQL_SCRIPT_STATUS=SUCCESS" /tmp/sd-script1.log; then
           echo "SQL script executed successfully. Renaming the script and moving to archive folder..."
@@ -58,8 +60,6 @@ phases:
         else
           echo "SQL script failed. Not archiving.";
         fi  
-  post_build:
-    commands:
       - echo "Cloning the repository for log file storage..."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
       - cd sd_imgdb
