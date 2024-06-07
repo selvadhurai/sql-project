@@ -58,10 +58,10 @@ phases:
           git commit -am "Archiving executed script"
           echo Final statement...
           git push #origin stage added
-          aws sns publish --topic-arn $SNS_TOPIC_ARN --message "Build succeeded: SQL script executed and archived."
+          # aws sns publish --topic-arn $SNS_TOPIC_ARN --message "Build succeeded: SQL script executed and archived."
         else
           echo "SQL script failed. Not archiving.";
-          aws sns publish --topic-arn $SNS_TOPIC_ARN --message "Build failed: SQL script execution encountered errors."
+          # aws sns publish --topic-arn $SNS_TOPIC_ARN --message "Build failed: SQL script execution encountered errors."
         fi  
       - echo "Cloning the repository for log file storage..."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
@@ -72,6 +72,7 @@ phases:
       - git commit -m "Adding log file for the executed script"
       - git push
       - echo "Log file has been pushed to the repository."
+      - aws sns publish --topic-arn arn:aws:sns:us-east-1:123456789012:CodeBuildNotifications --message "Build of project $CODEBUILD_PROJECT succeeded" --subject "Build Succeeded" || true
 
 artifacts:
   files:
