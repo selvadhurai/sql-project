@@ -63,6 +63,7 @@ phases:
         else
           echo "SQL script failed. Not archiving.";
           aws sns publish --topic-arn $SNS_TOPIC_ARN --message "Build of project $CODEBUILD_BUILD_ARN failed" --subject "Build Failed";
+          exit 1
         fi  
       - echo "Cloning the repository for log file storage..."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
