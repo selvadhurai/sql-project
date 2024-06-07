@@ -6,7 +6,7 @@ env:
   variables:
     AWS_ROLE_ARN: "arn:aws:iam::073139075499:policy/sd-codecommit"
     AWS_ROLE_SESSION_NAME: "CodeBuildSession"
-    # SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:073139075499:sd-CodeBuildNotifications"
+    SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:073139075499:sd-CodeBuildNotifications"
 
 phases:
   install:
@@ -58,8 +58,10 @@ phases:
           git commit -am "Archiving executed script"
           echo Final statement...
           git push #origin stage added
+          aws sns publish --topic-arn $SNS_TOPIC_ARN --message "Build succeeded: SQL script executed and archived."
         else
           echo "SQL script failed. Not archiving.";
+          aws sns publish --topic-arn $SNS_TOPIC_ARN --message "Build failed: SQL script execution encountered errors."
         fi  
       - echo "Cloning the repository for log file storage..."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
