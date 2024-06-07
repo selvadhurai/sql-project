@@ -7,6 +7,7 @@ env:
     AWS_ROLE_ARN: "arn:aws:iam::073139075499:policy/sd-codecommit"
     AWS_ROLE_SESSION_NAME: "CodeBuildSession"
     SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:073139075499:sd-CodeBuildNotifications"
+    CODEBUILD_PROJECT: "arn:aws:codebuild:us-east-1:073139075499:project/sd-geneart-rename-scrip"
 
 phases:
   install:
@@ -72,7 +73,7 @@ phases:
       - git commit -m "Adding log file for the executed script"
       - git push
       - echo "Log file has been pushed to the repository."
-      - aws sns publish --topic-arn arn:aws:sns:us-east-1:123456789012:CodeBuildNotifications --message "Build of project $CODEBUILD_PROJECT succeeded" --subject "Build Succeeded" || true
+      - aws sns publish --topic-arn $SNS_TOPIC_ARN --message "Build of project $CODEBUILD_PROJECT succeeded" --subject "Build Succeeded" || true
 
 artifacts:
   files:
