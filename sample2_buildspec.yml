@@ -34,10 +34,17 @@ phases:
       - echo Executing the SQL script...
       - chmod +x ./script/sd-script1.sh
       - bash ./script/sd-script1.sh
+      - |
+        if grep -q "SQL file executed successfully" /tmp/sd-script1.log; then
+          BUILD_SUCCESS=true
+        else
+          BUILD_SUCCESS=false
+        fi
   post_build:
     commands:
       - |
-        if grep -q "SQL file executed successfully" /tmp/sd-script1.log; then
+        if [ "$BUILD_SUCCESS" == "true" ]; then
+          # if grep -q "SQL file executed successfully" /tmp/sd-script1.log; then
           echo "SQL script executed successfully. Renaming the script and moving to archive folder..."
           echo "Cloning the repository..."
           # - git --version
@@ -63,7 +70,7 @@ phases:
         else
           echo "SQL script failed. Not archiving.";
           aws sns publish --topic-arn $SNS_TOPIC_ARN --message "Build of project $CODEBUILD_BUILD_ARN failed" --subject "Build Failed";
-          exit 1
+          # exit 1
         fi  
       - echo "Cloning the repository for log file storage..."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
