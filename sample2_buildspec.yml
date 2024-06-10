@@ -1,4 +1,4 @@
-# 3rd version
+# 5th version
 
 # Actual name is sample2_buildspec.yml for the pipeline same 2
 version: 0.2
@@ -18,12 +18,18 @@ phases:
       - sudo apt update -y
       - sudo apt install -y postgresql
       - sudo apt-get install -y awscli git
-      - export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' /tmp/assume-role-output)
-      - export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' /tmp/assume-role-output)
-      - export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' /tmp/assume-role-output)
+      - aws secretsmanager get-secret-value --secret-id myProject/DatabaseCredentials --query 'SecretString' --output text > /tmp/secrets.json
+      - export DB_HOST=$(jq -r '.DB_HOST' /tmp/secrets.json)
+      - export DB_PORT=$(jq -r '.DB_PORT' /tmp/secrets.json)
+      - export DB_NAME=$(jq -r '.DB_NAME' /tmp/secrets.json)
+      - export DB_USER=$(jq -r '.DB_USER' /tmp/secrets.json)
+      - export DB_PASSWORD=$(jq -r '.DB_PASSWORD' /tmp/secrets.json)
+      # - export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' /tmp/assume-role-output)
+      # - export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' /tmp/assume-role-output)
+      # - export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' /tmp/assume-role-output)
       - git config --global credential.helper '!aws codecommit credential-helper $@'
       - git config --global credential.UseHttpPath true
-      - export PGPASSWORD=$DB_PASSWORD
+      # - export PGPASSWORD=$DB_PASSWORD
       - touch /tmp/sd-script1.log
   pre_build:
     commands:
@@ -34,17 +40,10 @@ phases:
       - echo Executing the SQL script...
       - chmod +x ./script/sd-script1.sh
       - bash ./script/sd-script1.sh
-      - |
-        if grep -q "SQL file executed successfully" /tmp/sd-script1.log; then
-          BUILD_SUCCESS=true
-        else
-          BUILD_SUCCESS=false
-        fi
   post_build:
     commands:
       - |
-        if [ "$BUILD_SUCCESS" == "true" ]; then
-          # if grep -q "SQL file executed successfully" /tmp/sd-script1.log; then
+        if grep -q "SQL file executed successfully" /tmp/sd-script1.log; then
           echo "SQL script executed successfully. Renaming the script and moving to archive folder..."
           echo "Cloning the repository..."
           # - git --version
@@ -70,7 +69,7 @@ phases:
         else
           echo "SQL script failed. Not archiving.";
           aws sns publish --topic-arn $SNS_TOPIC_ARN --message "Build of project $CODEBUILD_BUILD_ARN failed" --subject "Build Failed";
-          # exit 1
+        
         fi  
       - echo "Cloning the repository for log file storage..."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
