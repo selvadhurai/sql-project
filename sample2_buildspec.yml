@@ -18,7 +18,7 @@ phases:
       - sudo apt update -y
       - sudo apt install -y postgresql
       - sudo apt-get install -y awscli git
-      - aws secretsmanager get-secret-value --secret-id myProject/DatabaseCredentials --query 'SecretString' --output text > /tmp/secrets.json
+      - aws secretsmanager get-secret-value --secret-id sd-DatabaseCredentials --query 'SecretString' --output text > /tmp/secrets.json
       - export DB_HOST=$(jq -r '.DB_HOST' /tmp/secrets.json)
       - export DB_PORT=$(jq -r '.DB_PORT' /tmp/secrets.json)
       - export DB_NAME=$(jq -r '.DB_NAME' /tmp/secrets.json)
