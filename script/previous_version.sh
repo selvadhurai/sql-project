@@ -10,6 +10,7 @@ DB_HOST="${DB_HOST}"
 DB_PORT="${DB_PORT}"
 DB_NAME="${DB_NAME}"
 DB_USER="${DB_USER}"
+DB_PASSWORD="${DB_PASSWORD}"
 
  # Identify previous version SQL script
  SQL_FILE=$(ls -1t archive/*.sql | tail -2)
@@ -20,7 +21,7 @@ DB_USER="${DB_USER}"
 if [ $? -eq 0 ]; then
     echo "Database is ready. Executing SQL file..."
     # Execute the SQL file
-    psql -q -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE" | tee -a $LOG_FILE
+    PGPASSWORD="$DB_PASSWORD" psql -q -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE" | tee -a $LOG_FILE
     if [ $? -eq 0 ]; then
         echo "SQL file executed successfully" | tee -a $LOG_FILE
     else
