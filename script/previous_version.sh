@@ -13,7 +13,8 @@ DB_USER="${DB_USER}"
 DB_PASSWORD="${DB_PASSWORD}"
 
  # Identify previous version SQL script
- SQL_FILE=$(ls -1t archive/*.sql | head -n 2 | tail -n 1)
+ # SQL_FILE=$(ls -1t archive/*.sql | head -n 2 | tail -n 1)
+ SQL_FILE=$(ls -1t archive/*.sql | sed -n 2p)
  echo "Previous SQL file: $SQL_FILE"
 
   pg_isready -h "$DB_HOST" -p "$DB_PORT" | tee -a $LOG_FILE
