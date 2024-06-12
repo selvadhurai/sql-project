@@ -12,15 +12,15 @@ DB_NAME="${DB_NAME}"
 DB_USER="${DB_USER}"
 DB_PASSWORD="${DB_PASSWORD}"
  
- # List all SQL files sorted by modification time
-echo "Listing all SQL files sorted by modification time:"
-ls -1t archive/*.sql
+# List all SQL files sorted by modification time
+echo "Listing all SQL files sorted by modification time:" | tee -a $LOG_FILE
+ls -lt archive/*.sql | tee -a $LOG_FILE
 
 # Store the sorted list in an array
 sql_files=($(ls -1t archive/*.sql))
 
 # Check the array contents
-echo "SQL files array: ${sql_files[@]}"
+echo "SQL files array: ${sql_files[@]}" | tee -a $LOG_FILE
 
 # Select the second most recent SQL file
 previous_sql_file=${sql_files[1]}
