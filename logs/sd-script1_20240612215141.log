@@ -1,0 +1,11 @@
+Starting script...
+selva-geneartdb.c7gozccxmuzm.us-east-1.rds.amazonaws.com:5432 - accepting connections
+Database is ready. Executing SQL file...
+SQL file executed successfully
+ ?column? 
+----------
+        1
+(1 row)
+
+SQL_SCRIPT_STATUS=SUCCESS
+Script compeleted successfully.
