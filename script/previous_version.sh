@@ -11,27 +11,32 @@ DB_PORT="${DB_PORT}"
 DB_NAME="${DB_NAME}"
 DB_USER="${DB_USER}"
 DB_PASSWORD="${DB_PASSWORD}"
+ 
+ # List all SQL files sorted by modification time
+echo "Listing all SQL files sorted by modification time:"
+ls -1t archive/*.sql
 
- # Identify previous version SQL script
- # SQL_FILE=$(ls -1t archive/*.sql | head -n 2 | tail -n 1)
- SQL_FILE=$(ls -1t archive/*.sql | sed -n 2p)
- echo "Previous SQL file: $SQL_FILE"
+# Store the sorted list in an array
+sql_files=($(ls -1t archive/*.sql))
 
-  pg_isready -h "$DB_HOST" -p "$DB_PORT" | tee -a $LOG_FILE
+# Check the array contents
+echo "SQL files array: ${sql_files[@]}"
 
-if [ $? -eq 0 ]; then
-    echo "Database is ready. Executing SQL file..."
-    # Execute the SQL file
-    PGPASSWORD="$DB_PASSWORD" psql -q -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$SQL_FILE" | tee -a $LOG_FILE
+# Select the second most recent SQL file
+previous_sql_file=${sql_files[1]}
+echo "Previous SQL file: $previous_sql_file"
+
+# Check if previous SQL file exists
+if [ -f "$previous_sql_file" ]; then
+    echo "Executing $previous_sql_file"
+    PGPASSWORD="$DB_PASSWORD" psql -q -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$previous_sql_file"
     if [ $? -eq 0 ]; then
-        echo "SQL file executed successfully" | tee -a $LOG_FILE
+        echo "SQL file executed successfully"
     else
-        echo "Error executing SQL file" | tee -a $LOG_FILE
+        echo "Error executing SQL file"
         exit 1
     fi
 else
-    echo "Database is not ready or authentication failed. Transaction terminated." | tee -a $LOG_FILE
+    echo "No previous SQL file found"
     exit 1
 fi
-
-echo "Script compeleted successfully." | tee -a $LOG_FILE
