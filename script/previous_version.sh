@@ -17,7 +17,7 @@ echo "Listing all SQL files sorted by modification time:" | tee -a $LOG_FILE
 ls -lt archive/*.sql | tee -a $LOG_FILE
 
 # Store the sorted list in an array
-sql_files=($(ls -1t archive/*.sql))
+sql_files=($(ls -1 archive/*.sql | sort -r))
 
 # Check the array contents
 echo "SQL files array: ${sql_files[@]}" | tee -a $LOG_FILE
