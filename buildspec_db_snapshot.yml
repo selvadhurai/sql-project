@@ -1,0 +1,46 @@
+version: 0.2
+env:
+  variables:
+    AWS_ROLE_ARN: "arn:aws:iam::073139075499:policy/sd-codecommit"
+    AWS_ROLE_SESSION_NAME: "CodeBuildSession"
+    # SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:073139075499:sd-CodeBuildNotifications"
+    # CODEBUILD_PROJECT: "arn:aws:codebuild:us-east-1:073139075499:project/sd-geneart-rename-scrip"
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.x
+    commands:
+      - echo Logging in to Amazon RDS...
+      - sudo apt update -y
+      - sudo apt install -y postgresql
+      - sudo apt-get install -y awscli git
+      - export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' /tmp/assume-role-output)
+      - export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' /tmp/assume-role-output)
+      - export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' /tmp/assume-role-output)
+      - git config --global credential.helper '!aws codecommit credential-helper $@'
+      - git config --global credential.UseHttpPath true
+      - export PGPASSWORD=$DB_PASSWORD
+      - touch /tmp/sd-script1.log
+  pre_build:
+    commands:
+      - SQL_FILE="./release_sql/release1.sql"
+      
+  build:
+    commands:
+      - echo Executing the SQL script...
+      - chmod +x ./script/sd-rds-snapshot-backup.sh
+      - bash ./script/sd-rds-snapshot-backup.sh
+  post_build:
+    commands:
+      - |
+        if grep -q "SQL file executed successfully" /tmp/sd-script1.log; then
+          echo "SQL script executed successfully. Renaming the script and moving to archive folder..."
+          
+        else
+          echo "SQL script failed. Not archiving.";
+                  
+        fi  
+artifacts:
+  files:
+    - /tmp/sd-script1.log
