@@ -1,0 +1,71 @@
+version: 0.2
+
+env:
+  variables:
+    NEW_DB_HOST: "new-db-instance-endpoint"
+    NEW_DB_USER: "db-username"
+    NEW_DB_NAME: "db-name"
+    NEW_DB_PASSWORD: "db-password"
+    EXISTING_DB_HOST: "existing-db-instance-endpoint"
+    EXISTING_DB_USER: "db-username"
+    EXISTING_DB_NAME: "db-name"
+    EXISTING_DB_PASSWORD: "db-password"
+    S3_BUCKET: "your-s3-bucket-name"
+    EXPORT_FILE: "db_export.sql"
+
+phases:
+  install:
+
+    runtime-versions:
+      python: 3.x
+    commands:
+      - echo Logging in to Amazon RDS...
+      - sudo apt update -y
+      - sudo apt install -y postgresql
+      - sudo apt-get install -y awscli git
+      - aws secretsmanager get-secret-value --secret-id sd-DatabaseCredentials --query 'SecretString' --output text > /tmp/secrets.json
+      - export DB_HOST=$(jq -r '.DB_HOST' /tmp/secrets.json)
+      - export DB_PORT=$(jq -r '.DB_PORT' /tmp/secrets.json)
+      - export DB_NAME=$(jq -r '.DB_NAME' /tmp/secrets.json)
+      - export DB_USER=$(jq -r '.DB_USER' /tmp/secrets.json)
+      - export DB_PASSWORD=$(jq -r '.DB_PASSWORD' /tmp/secrets.json)
+      - export NEW_DB_HOST=$(jq -r '.NEW_DB_HOST' /tmp/secrets.json)
+      - export NEW_DB_PORT=$(jq -r '.NEW_DB_PORT' /tmp/secrets.json)
+      - export NEW_DB_NAME=$(jq -r '.NEW_DB_NAME' /tmp/secrets.json)
+      - export NEW_DB_USER=$(jq -r '.NEW_DB_USER' /tmp/secrets.json)
+      - export NEW_DB_PASSWORD=$(jq -r '.NEW_DB_PASSWORD' /tmp/secrets.json)
+      - git config --global credential.helper '!aws codecommit credential-helper $@'
+      - git config --global credential.UseHttpPath true
+      
+
+  pre_build:
+    commands:
+      - echo "Starting DB export..."
+
+  build:
+    commands:
+      - export PGPASSWORD=$NEW_DB_PASSWORD
+      - pg_dump -q -h $NEW_DB_HOST -U $NEW_DB_USER -d $NEW_DB_NAME > $EXPORT_FILE
+      - echo "Exported data from new DB instance."
+      - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
+      - cd sd_imgdb/datafile
+      - cp $EXPORT_FILE ..sd_imgdb/datafile/$EXPORT_FILE
+      - echo "Uploaded export file to git."
+      - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
+      - git config --global user.name "selva"
+      - echo Configuring Git...
+      - git add -A
+      - git commit -am "Uploaded export"
+      - git push #origin stage added
+
+  post_build:
+    commands:
+      - echo "Starting DB import..."
+      - cp sd_imgdb/datafile/$EXPORT_FILE $EXPORT_FILE
+      - export PGPASSWORD=$DB_PASSWORD
+      - psql -q -h $DB_HOST -U $DB_USER -d $DB_NAME < $EXPORT_FILE
+      - echo "Imported data into existing DB instance."
+
+artifacts:
+  files:
+    - $EXPORT_FILE
