@@ -12,13 +12,7 @@ NEW_DB_NAME="${NEW_DB_NAME}"
 NEW_DB_USER="${NEW_DB_USER}"
 NEW_PGPASSWORD="${NEW_DB_PASSWORD}"  # Use the environment variable for password
 EXPORT_FILE="db_export.sql"
-# Check network connectivity
-echo "Testing connectivity to the database host..."
-ping -c 4 "$NEW_DB_HOST"
-if [ $? -ne 0 ]; then
-    echo "Failed to reach the database host. Exiting."
-    exit 1
-fi
+
 # Check if the database is ready
 pg_isready -q -h "$NEW_DB_HOST" -p "$NEW_DB_PORT" -U "$NEW_DB_USER" -d "$NEW_DB_NAME"
 if [ $? -eq 0 ]; then
