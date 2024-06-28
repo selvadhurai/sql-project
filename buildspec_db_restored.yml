@@ -2,15 +2,9 @@ version: 0.2
 
 env:
   variables:
-    NEW_DB_HOST: "new-db-instance-endpoint"
-    NEW_DB_USER: "db-username"
-    NEW_DB_NAME: "db-name"
-    NEW_DB_PASSWORD: "db-password"
-    EXISTING_DB_HOST: "existing-db-instance-endpoint"
-    EXISTING_DB_USER: "db-username"
-    EXISTING_DB_NAME: "db-name"
-    EXISTING_DB_PASSWORD: "db-password"
-    S3_BUCKET: "your-s3-bucket-name"
+    variables:
+    AWS_ROLE_ARN: "arn:aws:iam::073139075499:policy/sd-codecommit"
+    AWS_ROLE_SESSION_NAME: "CodeBuildSession"
     EXPORT_FILE: "db_export.sql"
 
 phases:
@@ -63,7 +57,7 @@ phases:
       - echo "Starting DB import..."
       - cp sd_imgdb/datafile/$EXPORT_FILE $EXPORT_FILE
       - export PGPASSWORD=$DB_PASSWORD
-      - psql -q -h $DB_HOST -U $DB_USER -d $DB_NAME < $EXPORT_FILE
+      # - psql -q -h $DB_HOST -U $DB_USER -d $DB_NAME < $EXPORT_FILE
       - echo "Imported data into existing DB instance."
 
 artifacts:
