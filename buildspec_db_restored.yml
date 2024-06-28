@@ -39,7 +39,10 @@ phases:
   build:
     commands:
       - export PGPASSWORD=$NEW_DB_PASSWORD
-      - pg_dump -q -h $NEW_DB_HOST -U $NEW_DB_USER -d $NEW_DB_NAME > $EXPORT_FILE
+      - echo Executing the SQL script...
+      - chmod +x ./script/backupsql.sh
+      - bash ./script/backupsql.sh
+      #- pg_dump -q -h $NEW_DB_HOST -U $NEW_DB_USER -d $NEW_DB_NAME > $EXPORT_FILE backupsql.sh
       - echo "Exported data from new DB instance."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
       - cd sd_imgdb/datafile
