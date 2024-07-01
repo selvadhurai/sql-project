@@ -48,8 +48,8 @@ phases:
       #- pg_dump -q -h $NEW_DB_HOST -U $NEW_DB_USER -d $NEW_DB_NAME > $EXPORT_FILE backupsql.sh
       - echo "Exported data from new DB instance."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-      - cd sd_imgdb/datafile
-      - cp $EXPORT_FILE ..sd_imgdb/datafile/$EXPORT_FILE
+      # - cd sd_imgdb
+      - mv $EXPORT_FILE ..sd_imgdb/datafile/
       - echo "Uploaded export file to git."
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
