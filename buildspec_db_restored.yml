@@ -15,7 +15,10 @@ phases:
     commands:
       - echo Logging in to Amazon RDS...
       - sudo apt update -y
-      - sudo apt install -y postgresql
+      - sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+      - wget -qO - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+      - sudo apt-get update
+      - sudo apt install -y postgresql-client-14
       - sudo apt-get install -y awscli git
       - aws secretsmanager get-secret-value --secret-id sd-DatabaseCredentials --query 'SecretString' --output text > /tmp/secrets.json
       - export DB_HOST=$(jq -r '.DB_HOST' /tmp/secrets.json)
