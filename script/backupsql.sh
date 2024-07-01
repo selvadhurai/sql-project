@@ -5,12 +5,12 @@ DB_HOST="${DB_HOST}"
 DB_PORT="${DB_PORT}"
 DB_NAME="${DB_NAME}"
 DB_USER="${DB_USER}"
-PGPASSWORD="${DB_PASSWORD}"  # Use the environment variable for password
+DB_PASSWORD="${DB_PASSWORD}"  # Use the environment variable for password
 NEW_DB_HOST="${NEW_DB_HOST}"
 NEW_DB_PORT="${NEW_DB_PORT}"
 NEW_DB_NAME="${NEW_DB_NAME}"
 NEW_DB_USER="${NEW_DB_USER}"
-NEW_PGPASSWORD="${NEW_DB_PASSWORD}"  # Use the environment variable for password
+NEW_DB_PASSWORD="${NEW_DB_PASSWORD}"  # Use the environment variable for password
 EXPORT_FILE="db_export.sql"
 
 # Check if the database is ready
