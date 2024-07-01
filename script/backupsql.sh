@@ -14,11 +14,11 @@ NEW_DB_PASSWORD="${NEW_DB_PASSWORD}"  # Use the environment variable for passwor
 EXPORT_FILE="db_export.sql"
 
 # Check if the database is ready
-pg_isready -q -h "$NEW_DB_HOST" -p "$NEW_DB_PORT" -U "$NEW_DB_USER" -d "$NEW_DB_NAME"
+pg_isready -h "$NEW_DB_HOST" -p "$NEW_DB_PORT" -U "$NEW_DB_USER" -d "$NEW_DB_NAME"
 if [ $? -eq 0 ]; then
     echo "Database is ready. Executing SQL file..."
     # Execute the SQL file
-    pg_dump -q -h $NEW_DB_HOST -U $NEW_DB_USER -d $NEW_DB_NAME > $EXPORT_FILE
+    PGPASSWORD="$NEW_DB_PASSWORD" pg_dump -h $NEW_DB_HOST -U $NEW_DB_USER -d $NEW_DB_NAME > $EXPORT_FILE
     if [ $? -eq 0 ]; then
         echo "SQL file executed successfully"
     else
