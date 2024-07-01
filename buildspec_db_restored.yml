@@ -50,6 +50,7 @@ phases:
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
       # - cd sd_imgdb
       - mv $EXPORT_FILE sd_imgdb/datafile/
+      - cd sd_imgdb 
       - echo "Uploaded export file to git."
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
