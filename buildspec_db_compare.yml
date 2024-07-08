@@ -17,7 +17,7 @@ phases:
       - sudo apt update -y
       - sudo apt install -y postgresql
       - sudo apt-get update -y
-      - sudo pip install pg-diff
+      - pip install pg-diff
       - sudo apt-get install -y awscli git
       - echo Executing the SQL script...
       - aws secretsmanager get-secret-value --secret-id sd-DatabaseCredentials --query 'SecretString' --output text > /tmp/secrets.json
