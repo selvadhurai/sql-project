@@ -21,12 +21,12 @@ DATA_DIFF_FILE="data_diff.sql"
 
 # Export current and previous databases
 echo "Exporting current database..."
-export PGPASSWORD=$CURRENT_DB_PASSWORD
-pg_dump -q -h $CURRENT_DB_HOST -U $CURRENT_DB_USER -d $CURRENT_DB_NAME > $EXPORT_DIR/current_db_export.sql
+
+PGPASSWORD=$CURRENT_DB_PASSWORD pg_dump -h $CURRENT_DB_HOST -U $CURRENT_DB_USER -d $CURRENT_DB_NAME > $EXPORT_DIR/current_db_export.sql
 
 echo "Exporting previous database..."
-export PGPASSWORD=$PREVIOUS_DB_PASSWORD
-pg_dump -q -h $PREVIOUS_DB_HOST -U $PREVIOUS_DB_USER -d $PREVIOUS_DB_NAME > $EXPORT_DIR/previous_db_export.sql
+
+PGPASSWORD=$PREVIOUS_DB_PASSWORD pg_dump -h $PREVIOUS_DB_HOST -U $PREVIOUS_DB_USER -d $PREVIOUS_DB_NAME > $EXPORT_DIR/previous_db_export.sql
 
 # Compare schemas
 echo "Comparing schemas..."

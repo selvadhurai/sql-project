@@ -38,13 +38,15 @@ phases:
     commands:
       # SQL_FILE="./release_sql/release1.sql" #SQL file
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-      - cd sd_imgdb
+      #- cd sd_imgdb
       
   build:
     commands:
       - echo Executing the SQL script...
       - chmod +x ./script/compare_exportsql.sh # script file 
       - bash ./script/compare_exportsql.sh
+      #- chmod +x ./script/backupsql.sh
+      #- bash ./script/backupsql.sh
   post_build:
     commands:
       - |
@@ -52,14 +54,14 @@ phases:
           echo "SQL script executed successfully. Renaming the script and moving to archive folder..."
           echo "Cloning the repository..."
           git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-          cd sd_imgdb/datafiles
+          cd sd_imgdb
           git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
           git config --global user.name "selva"
           echo Configuring Git...
           git add -A
           git commit -am "dif script"
           echo Final statement...
-          git push #origin stage added
+          git push origin main   
         else
           echo "SQL script failed. Not archiving.";
         fi  
