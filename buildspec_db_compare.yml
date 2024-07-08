@@ -16,9 +16,8 @@ phases:
     commands:
       - sudo apt update -y
       - sudo apt install -y postgresql
-      - sudo apt update -y
-      - sudo dpkg -i /path/to/pg_comparator.deb  # Assuming pg_comparator.deb is part of the custom image or copied to the build environment
-      - sudo apt-get install -f
+      - sudo apt-get update -y
+      - sudo pip install pg-diff
       - sudo apt-get install -y awscli git
       - echo Executing the SQL script...
       - aws secretsmanager get-secret-value --secret-id sd-DatabaseCredentials --query 'SecretString' --output text > /tmp/secrets.json
