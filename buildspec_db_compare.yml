@@ -1,3 +1,5 @@
+# test
+
 # comparing two db sql file , for that this yml help to execute the build
 version: 0.2
 env:
@@ -7,7 +9,7 @@ env:
     SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:073139075499:sd-CodeBuildNotifications"
     # CODEBUILD_PROJECT: "arn:aws:codebuild:us-east-1:073139075499:project/sd-geneart-rename-scrip"
 
- ## phases:
+phases:
   install:
     runtime-versions:
       python: 3.x
@@ -16,6 +18,7 @@ env:
       - sudo apt install -y postgresql
       - sudo apt-get install pg_comparator
       - sudo apt-get install -y awscli git
+      - echo Executing the SQL script...
       - aws secretsmanager get-secret-value --secret-id sd-DatabaseCredentials --query 'SecretString' --output text > /tmp/secrets.json
       - export CURRENT_DB_HOST=$(jq -r '.CURRENT_DB_HOST' /tmp/secrets.json)
       - export CURRENT_DB_PORT=$(jq -r '.CURRENT_DB_PORT' /tmp/secrets.json)
