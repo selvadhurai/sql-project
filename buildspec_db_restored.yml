@@ -62,8 +62,10 @@ phases:
   post_build:
     commands:
       - echo "Starting DB import..."
-      - cp sd_imgdb/datafile/$EXPORT_FILE $EXPORT_FILE
+      # - cp sd_imgdb/datafile/$EXPORT_FILE $EXPORT_FILE
       - export PGPASSWORD=$DB_PASSWORD
+      - chmod +x ./script/restoredsql.sh
+      - bash ./script/restoredsql.sh
       # - psql -q -h $DB_HOST -U $DB_USER -d $DB_NAME < $EXPORT_FILE
       - echo "Imported data into existing DB instance."
 

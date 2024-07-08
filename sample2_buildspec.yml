@@ -24,21 +24,17 @@ phases:
       - export DB_NAME=$(jq -r '.DB_NAME' /tmp/secrets.json)
       - export DB_USER=$(jq -r '.DB_USER' /tmp/secrets.json)
       - export DB_PASSWORD=$(jq -r '.DB_PASSWORD' /tmp/secrets.json)
-      # - export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' /tmp/assume-role-output)
-      # - export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' /tmp/assume-role-output)
-      # - export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' /tmp/assume-role-output)
       - git config --global credential.helper '!aws codecommit credential-helper $@'
       - git config --global credential.UseHttpPath true
-      # - export PGPASSWORD=$DB_PASSWORD
       - touch /tmp/sd-script1.log
   pre_build:
     commands:
-      - SQL_FILE="./release_sql/release1.sql"
+      - SQL_FILE="./release_sql/release1.sql" #SQL file
       
   build:
     commands:
       - echo Executing the SQL script...
-      - chmod +x ./script/sd-script1.sh
+      - chmod +x ./script/sd-script1.sh # script file 
       - bash ./script/sd-script1.sh
   post_build:
     commands:
