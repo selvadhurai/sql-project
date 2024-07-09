@@ -63,8 +63,8 @@ phases:
           git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
           git config --global user.name "selva"
           echo Configuring Git...
-          git add -A
-          git commit -am "dif script"
+          git add .
+          git commit -m "dif script"
           echo Final statement...
           git push origin main   
         else
