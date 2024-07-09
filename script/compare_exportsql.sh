@@ -17,6 +17,9 @@ EXPORT_DIR="datafile"
 SCHEMA_DIFF_FILE="schema_diff.sql"
 DATA_DIFF_FILE="data_diff.sql"
 # mkdir -p $EXPORT_DIR
+# Check if the database is ready
+pg_isready -h "$CURRENT_DB_HOST" -p "$CURRENT_DB_PORT" -U "$CURRENT_DB_USER" -d "$CURRENT_DB_NAME"
+pg_isready -h "$PREVIOUS_DB_HOST" -p "$PREVIOUS_DB_PORT" -U "$PREVIOUS_DB_USER" -d "$PREVIOUS_DB_NAME"
 # Export current and previous databases
 echo "Exporting current database..."
 PGPASSWORD="$CURRENT_DB_PASSWORD" pg_dump -h $CURRENT_DB_HOST -U $CURRENT_DB_USER -d $CURRENT_DB_NAME > $EXPORT_DIR/current_db_export.sql
