@@ -74,8 +74,8 @@ ls -l $EXPORT_DIR
 # Commit changes to git
 echo "Committing changes to git..."
 # cd sd_imgdb
-git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
-git config --global user.name "Selva"
-git add datafile/*
-git commit -m "Add database export files and differences"
-git push origin main
+#git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
+#git config --global user.name "Selva"
+#git add datafile/*
+#git commit -m "Add database export files and differences"
+#git push origin main
