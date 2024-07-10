@@ -22,14 +22,21 @@ pg_isready -h "$CURRENT_DB_HOST" -p "$CURRENT_DB_PORT" -U "$CURRENT_DB_USER" -d 
 pg_isready -h "$PREVIOUS_DB_HOST" -p "$PREVIOUS_DB_PORT" -U "$PREVIOUS_DB_USER" -d "$PREVIOUS_DB_NAME"
 # Export current and previous databases
 echo "Exporting current database..."
-PGPASSWORD="$CURRENT_DB_PASSWORD" pg_dump -h $CURRENT_DB_HOST -U $CURRENT_DB_USER -d $CURRENT_DB_NAME > $EXPORT_DIR/current_db_export.sql
+export PGPASSWORD=$CURRENT_DB_PASSWORD
+pg_dump -s -h $CURRENT_DB_HOST -U $CURRENT_DB_USER -d $CURRENT_DB_NAME > $EXPORT_DIR/current_db_schema.sql
+pg_dump -a -h $CURRENT_DB_HOST -U $CURRENT_DB_USER -d $CURRENT_DB_NAME > $EXPORT_DIR/current_db_data.sql
+
 echo "Exporting previous database..."
-PGPASSWORD="$PREVIOUS_DB_PASSWORD" pg_dump -h $PREVIOUS_DB_HOST -U $PREVIOUS_DB_USER -d $PREVIOUS_DB_NAME > $EXPORT_DIR/previous_db_export.sql
-# Compare schemas
+export PGPASSWORD=$PREVIOUS_DB_PASSWORD
+pg_dump -s -h $PREVIOUS_DB_HOST -U $PREVIOUS_DB_USER -d $PREVIOUS_DB_NAME > $EXPORT_DIR/previous_db_schema.sql
+pg_dump -a -h $PREVIOUS_DB_HOST -U $PREVIOUS_DB_USER -d $PREVIOUS_DB_NAME > $EXPORT_DIR/previous_db_data.sql
+# Compare schemas using diff
 echo "Comparing schemas..."
-pg_diff --type=schema "host=$PREVIOUS_DB_HOST port=5432 dbname=$PREVIOUS_DB_NAME user=$PREVIOUS_DB_USER password=$PREVIOUS_DB_PASSWORD" "host=$CURRENT_DB_HOST port=5432 dbname=$CURRENT_DB_NAME user=$CURRENT_DB_USER password=$CURRENT_DB_PASSWORD" --output $EXPORT_DIR/$SCHEMA_DIFF_FILE
-# Compare data
+diff $EXPORT_DIR/previous_db_schema.sql $EXPORT_DIR/current_db_schema.sql > $EXPORT_DIR/$SCHEMA_DIFF_FILE
+
+# Compare data using diff
 echo "Comparing data..."
-diff $EXPORT_DIR/previous_db_export.sql $EXPORT_DIR/current_db_export.sql > $EXPORT_DIR/$DATA_DIFF_FILE
+diff $EXPORT_DIR/previous_db_data.sql $EXPORT_DIR/current_db_data.sql > $EXPORT_DIR/$DATA_DIFF_FILE
+
 echo "Schema differences saved to $EXPORT_DIR/$SCHEMA_DIFF_FILE"
 echo "Data differences saved to $EXPORT_DIR/$DATA_DIFF_FILE"
