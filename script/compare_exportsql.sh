@@ -73,7 +73,7 @@ echo "Listing contents of the export directory:"
 ls -l $EXPORT_DIR
 # Commit changes to git
 echo "Committing changes to git..."
-cd sd_image
+cd sd_imgdb
 git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
 git config --global user.name "Selva"
 git add datafile/*
