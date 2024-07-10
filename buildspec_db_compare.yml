@@ -55,21 +55,21 @@ phases:
   post_build:
     commands:
       - |
-        if grep -q "SQL file executed successfully" 
+        ./script/compare_exportsql.sh && (
           echo "SQL script executed successfully. Renaming the script and moving to archive folder..."
           echo "Cloning the repository..."
           git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
           cd sd_imgdb
           git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
           git config --global user.name "selva"
-          echo Configuring Git...
+          echo "Configuring Git..."
           git add .
           git commit -m "dif script"
-          echo Final statement...
-          git push origin main   
-        else
-          echo "SQL script failed. Not archiving.";
-        fi  
+          echo "Final statement..."
+          git push origin main
+        ) || (
+          echo "SQL script failed. Not archiving."
+        )
 artifacts:
   files:
     - sd_image/datafile/*
