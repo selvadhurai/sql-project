@@ -54,18 +54,18 @@ if [ ! -s $EXPORT_DIR/previous_db_schema.sql ]; then
 fi
 # Compare schemas using diff
 echo "Comparing schemas..."
-if diff $EXPORT_DIR/previous_db_schema.sql $EXPORT_DIR/current_db_schema.sql > $EXPORT_DIR/$SCHEMA_DIFF_FILE; then
-  echo "No schema differences found."
-else
+if ! diff $EXPORT_DIR/previous_db_schema.sql $EXPORT_DIR/current_db_schema.sql > $EXPORT_DIR/$SCHEMA_DIFF_FILE; then
   echo "Schema differences found and saved to $EXPORT_DIR/$SCHEMA_DIFF_FILE"
+else
+  echo "No schema differences found."
 fi
 
 # Compare data using diff
 echo "Comparing data..."
-if diff $EXPORT_DIR/previous_db_data.sql $EXPORT_DIR/current_db_data.sql > $EXPORT_DIR/$DATA_DIFF_FILE; then
-  echo "No data differences found."
-else
+if ! diff $EXPORT_DIR/previous_db_data.sql $EXPORT_DIR/current_db_data.sql > $EXPORT_DIR/$DATA_DIFF_FILE; then
   echo "Data differences found and saved to $EXPORT_DIR/$DATA_DIFF_FILE"
+else
+  echo "No data differences found."
 fi
 echo "Schema differences saved to $EXPORT_DIR/$SCHEMA_DIFF_FILE"
 echo "Data differences saved to $EXPORT_DIR/$DATA_DIFF_FILE"
