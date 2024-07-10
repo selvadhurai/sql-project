@@ -71,3 +71,11 @@ echo "Schema differences saved to $EXPORT_DIR/$SCHEMA_DIFF_FILE"
 echo "Data differences saved to $EXPORT_DIR/$DATA_DIFF_FILE"
 echo "Listing contents of the export directory:"
 ls -l $EXPORT_DIR
+# Commit changes to git
+echo "Committing changes to git..."
+cd sd_image
+git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
+git config --global user.name "Selva"
+git add datafile/*
+git commit -m "Add database export files and differences"
+git push
