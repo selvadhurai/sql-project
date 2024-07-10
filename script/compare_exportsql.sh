@@ -42,11 +42,25 @@ if ! pg_dump -a -h $PREVIOUS_DB_HOST -U $PREVIOUS_DB_USER -d $PREVIOUS_DB_NAME >
   echo "Failed to export previous database data."
   exit 1
 fi
+# Verify if the files are created and not empty
+echo "Verifying schema export files..."
+if [ ! -s $EXPORT_DIR/current_db_schema.sql ]; then
+  echo "Current database schema export file is empty or not found."
+  exit 1
+fi
+if [ ! -s $EXPORT_DIR/previous_db_schema.sql ]; then
+  echo "Previous database schema export file is empty or not found."
+  exit 1
+fi
 
 # Compare schemas using diff
 echo "Comparing schemas..."
 if ! diff $EXPORT_DIR/previous_db_schema.sql $EXPORT_DIR/current_db_schema.sql > $EXPORT_DIR/$SCHEMA_DIFF_FILE; then
   echo "Failed to compare schemas."
+  echo "Contents of current_db_schema.sql:"
+  cat $EXPORT_DIR/current_db_schema.sql
+  echo "Contents of previous_db_schema.sql:"
+  cat $EXPORT_DIR/previous_db_schema.sql
   exit 1
 fi
 
@@ -54,7 +68,12 @@ fi
 echo "Comparing data..."
 if ! diff $EXPORT_DIR/previous_db_data.sql $EXPORT_DIR/current_db_data.sql > $EXPORT_DIR/$DATA_DIFF_FILE; then
   echo "Failed to compare data."
+  echo "Contents of current_db_data.sql:"
+  cat $EXPORT_DIR/current_db_data.sql
+  echo "Contents of previous_db_data.sql:"
+  cat $EXPORT_DIR/previous_db_data.sql
   exit 1
 fi
+
 echo "Schema differences saved to $EXPORT_DIR/$SCHEMA_DIFF_FILE"
 echo "Data differences saved to $EXPORT_DIR/$DATA_DIFF_FILE"
