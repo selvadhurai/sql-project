@@ -8,7 +8,7 @@ env:
     AWS_ROLE_SESSION_NAME: "CodeBuildSession"
     SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:073139075499:sd-CodeBuildNotifications"
     # CODEBUILD_PROJECT: "arn:aws:codebuild:us-east-1:073139075499:project/sd-geneart-rename-scrip"
-      
+
 phases:
   install:
     runtime-versions:
@@ -61,7 +61,7 @@ phases:
           git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
           git config --global user.name "selva"
           echo "Configuring Git..."
-          git add datafiles/*
+          git add datafile/*
           git commit -m "Add database export files and differences"
           echo "Final statement..."
           git push origin main
