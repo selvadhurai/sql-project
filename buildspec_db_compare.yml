@@ -8,7 +8,7 @@ env:
     AWS_ROLE_SESSION_NAME: "CodeBuildSession"
     SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:073139075499:sd-CodeBuildNotifications"
     # CODEBUILD_PROJECT: "arn:aws:codebuild:us-east-1:073139075499:project/sd-geneart-rename-scrip"
-
+      
 phases:
   install:
     runtime-versions:
@@ -57,14 +57,12 @@ phases:
       - |
         ./script/compare_exportsql.sh && (
           echo "SQL script executed successfully. Renaming the script and moving to archive folder..."
-          echo "Cloning the repository..."
-          git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
           cd sd_imgdb
           git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
           git config --global user.name "selva"
           echo "Configuring Git..."
-          git add .
-          git commit -m "dif script"
+          git add datafiles/*
+          git commit -m "Add database export files and differences"
           echo "Final statement..."
           git push origin main
         ) || (
