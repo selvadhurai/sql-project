@@ -69,3 +69,5 @@ else
 fi
 echo "Schema differences saved to $EXPORT_DIR/$SCHEMA_DIFF_FILE"
 echo "Data differences saved to $EXPORT_DIR/$DATA_DIFF_FILE"
+echo "Listing contents of the export directory:"
+ls -l $EXPORT_DIR
