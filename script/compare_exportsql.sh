@@ -78,4 +78,4 @@ git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
 git config --global user.name "Selva"
 git add datafile/*
 git commit -m "Add database export files and differences"
-git push
+git push origin main
