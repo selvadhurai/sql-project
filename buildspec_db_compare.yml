@@ -47,7 +47,7 @@ phases:
       - bash ./script/backupsql.sh
       - echo "Exported data from new DB instance."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-      - cd sd_imgdb
+      #- cd sd_imgdb
       - ls -l
       - echo "Moving export file to sd_imgdb/datafile/"
       - mv $EXPORT_FILE datafile/
