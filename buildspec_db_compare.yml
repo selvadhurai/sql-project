@@ -5,7 +5,7 @@ env:
     variables:
     AWS_ROLE_ARN: "arn:aws:iam::073139075499:policy/sd-codecommit"
     AWS_ROLE_SESSION_NAME: "CodeBuildSession"
-    EXPORT_FILE: "db_export.sql"
+    EXPORT_FILE: "db_export1.sql"
 
 phases:
   install:
@@ -45,19 +45,23 @@ phases:
       - echo Executing the SQL script...
       - chmod +x ./script/backupsql.sh
       - bash ./script/backupsql.sh
-      - echo "Checking if export file was created..."
-      - ls -l $EXPORT_FILE
       - echo "Exported data from new DB instance."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
       - mv $EXPORT_FILE sd_imgdb/datafile/
       - cd sd_imgdb
+      - git checkout main # Ensure we are on the main branch
       - echo "Uploaded export file to git."
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
       - echo Configuring Git...
       - git add datafile/$EXPORT_FILE
-      - git commit -m "Uploaded export"
-      - git push origin main
+      #- git status # Verify if the file is added
+      #- git commit -m "Uploaded export"
+      #- git push origin main
+      #- echo Configuring Git...
+      - git add -A
+      - git commit -am "Uploaded export"
+      - git push origin main 
 
   post_build:
     commands:

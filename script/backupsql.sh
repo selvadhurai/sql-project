@@ -11,7 +11,7 @@ NEW_DB_PORT="${NEW_DB_PORT}"
 NEW_DB_NAME="${NEW_DB_NAME}"
 NEW_DB_USER="${NEW_DB_USER}"
 NEW_DB_PASSWORD="${NEW_DB_PASSWORD}"  # Use the environment variable for password
-EXPORT_FILE="db_export.sql"
+EXPORT_FILE="db_export1.sql"
 
 # Check if the database is ready
 pg_isready -h "$NEW_DB_HOST" -p "$NEW_DB_PORT" -U "$NEW_DB_USER" -d "$NEW_DB_NAME"
