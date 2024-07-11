@@ -41,7 +41,7 @@ phases:
 
   build:
     commands:
-      - export PGPASSWORD=$NEW_DB_PASSWORD
+      - export PGPASSWORD=$DB_PASSWORD
       - echo Executing the SQL script...
       - chmod +x ./script/backupsql.sh
       - bash ./script/backupsql.sh
