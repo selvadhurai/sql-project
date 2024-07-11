@@ -47,9 +47,14 @@ phases:
       - bash ./script/backupsql.sh
       - echo "Exported data from new DB instance."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
+      - ls -l
+      - echo "Checking if the export file exists:"
       - ls -l $EXPORT_FILE
+      - echo "Listing sd_imgdb/datafile/ directory contents before moving file:"
       - ls -l sd_imgdb/datafile/
+      - echo "Moving export file to sd_imgdb/datafile/"
       - mv $EXPORT_FILE sd_imgdb/datafile/
+      - echo "Listing sd_imgdb/datafile/ directory contents after moving file:"
       - ls -l sd_imgdb/datafile/
       - cd sd_imgdb 
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
