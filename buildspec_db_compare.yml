@@ -45,17 +45,17 @@ phases:
       - echo Executing the SQL script...
       - chmod +x ./script/backupsql.sh
       - bash ./script/backupsql.sh
+      - echo "Checking if export file was created..."
+      - ls -l $EXPORT_FILE
       - echo "Exported data from new DB instance."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
       - mv $EXPORT_FILE sd_imgdb/datafile/
       - cd sd_imgdb
-      - git checkout main # Ensure we are on the main branch
       - echo "Uploaded export file to git."
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
       - echo Configuring Git...
       - git add datafile/$EXPORT_FILE
-      - git status # Verify if the file is added
       - git commit -m "Uploaded export"
       - git push origin main
 
