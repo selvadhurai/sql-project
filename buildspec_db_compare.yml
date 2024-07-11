@@ -53,10 +53,10 @@ phases:
       - echo "Listing sd_imgdb/datafile/ directory contents before moving file:"
       - ls -l sd_imgdb/datafile/
       - echo "Moving export file to sd_imgdb/datafile/"
-      - mv $EXPORT_FILE sd_imgdb/datafile/
+      - mv $EXPORT_FILE datafile/
       - echo "Listing sd_imgdb/datafile/ directory contents after moving file:"
       - ls -l sd_imgdb/datafile/
-      - cd sd_imgdb 
+      # - cd sd_imgdb 
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
       - echo Configuring Git...
