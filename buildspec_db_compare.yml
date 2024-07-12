@@ -1,77 +1,78 @@
-# test
-
-# comparing two db sql file , for that this yml help to execute the build
 version: 0.2
+
 env:
   variables:
+    variables:
     AWS_ROLE_ARN: "arn:aws:iam::073139075499:policy/sd-codecommit"
     AWS_ROLE_SESSION_NAME: "CodeBuildSession"
-    SCHEMA_DIFF_FILE: "schema_diff.sql"
-    DATA_DIFF_FILE: "data_diff.sql"
-    EXPORT_DIR: "datafile"
-    #SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:073139075499:sd-CodeBuildNotifications"
-    # CODEBUILD_PROJECT: "arn:aws:codebuild:us-east-1:073139075499:project/sd-geneart-rename-scrip"
+    EXPORT_FILE: "db_export1.sql"
 
 phases:
   install:
+
     runtime-versions:
       python: 3.x
     commands:
+      - echo Logging in to Amazon RDS...
       - sudo apt update -y
-      - sudo apt install -y postgresql
-      - sudo apt-get update -y
-      - pip install pg-diff
-      - sudo apt-get install -y awscli git
       - sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
       - wget -qO - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
       - sudo apt-get update
       - sudo apt install -y postgresql-client-14
       - sudo apt-get install -y awscli git
-      - echo Executing the SQL script...
       - aws secretsmanager get-secret-value --secret-id sd-DatabaseCredentials --query 'SecretString' --output text > /tmp/secrets.json
-      - export CURRENT_DB_HOST=$(jq -r '.CURRENT_DB_HOST' /tmp/secrets.json)
-      - export CURRENT_DB_PORT=$(jq -r '.CURRENT_DB_PORT' /tmp/secrets.json)
-      - export CURRENT_DB_NAME=$(jq -r '.CURRENT_DB_NAME' /tmp/secrets.json)
-      - export CURRENT_DB_USER=$(jq -r '.CURRENT_DB_USER' /tmp/secrets.json)
-      - export CURRENT_DB_PASSWORD=$(jq -r '.CURRENT_DB_PASSWORD' /tmp/secrets.json)
       - export DB_HOST=$(jq -r '.DB_HOST' /tmp/secrets.json)
       - export DB_PORT=$(jq -r '.DB_PORT' /tmp/secrets.json)
       - export DB_NAME=$(jq -r '.DB_NAME' /tmp/secrets.json)
       - export DB_USER=$(jq -r '.DB_USER' /tmp/secrets.json)
       - export DB_PASSWORD=$(jq -r '.DB_PASSWORD' /tmp/secrets.json)
+      - export NEW_DB_HOST=$(jq -r '.NEW_DB_HOST' /tmp/secrets.json)
+      - export NEW_DB_PORT=$(jq -r '.NEW_DB_PORT' /tmp/secrets.json)
+      - export NEW_DB_NAME=$(jq -r '.NEW_DB_NAME' /tmp/secrets.json)
+      - export NEW_DB_USER=$(jq -r '.NEW_DB_USER' /tmp/secrets.json)
+      - export NEW_DB_PASSWORD=$(jq -r '.NEW_DB_PASSWORD' /tmp/secrets.json)
       - git config --global credential.helper '!aws codecommit credential-helper $@'
       - git config --global credential.UseHttpPath true
-      - touch /tmp/sd-script1.log 
+      
+
   pre_build:
     commands:
-      # SQL_FILE="./release_sql/release1.sql" #SQL file
-      # - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-      #- cd sd_imgdb
       - echo "Starting DB export..."
-      
+
   build:
     commands:
+      - export PGPASSWORD=$DB_PASSWORD
       - echo Executing the SQL script...
-      - chmod +x ./script/compare_exportsql.sh # script file 
-      - bash ./script/compare_exportsql.sh
-      #- chmod +x ./script/backupsql.sh
-      #- bash ./script/backupsql.sh
-  post_build:
-    commands:
-      - echo "Export data and schem files "
+      - chmod +x ./script/backupsql.sh
+      - bash ./script/backupsql.sh
+      - echo "Exported data from new DB instance."
       - git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/sd_imgdb
-      - mv $EXPORT_DIR sd_imgdb/datafile/
-      # - echo "SQL script executed successfully. Renaming the script and moving to archive folder..."
+      - mv $EXPORT_FILE sd_imgdb/datafile/
       - cd sd_imgdb
       - git checkout main # Ensure we are on the main branch
       - echo "Uploaded export file to git."
       - git config --global user.email "selvadhurai.gunasekaran@sanfordhealth.org"
       - git config --global user.name "selva"
       - echo Configuring Git...
-      - git add .
+      - git add datafile/$EXPORT_FILE
+      #- git status # Verify if the file is added
+      #- git commit -m "Uploaded export"
+      #- git push origin main
+      #- echo Configuring Git...
       - git add -A
       - git commit -am "Uploaded export"
-      - git push origin main #origin stage added
+      - git push origin main 
+
+  post_build:
+    commands:
+      - echo "Starting DB import..."
+      # - cp sd_imgdb/datafile/$EXPORT_FILE $EXPORT_FILE
+      # - export PGPASSWORD=$DB_PASSWORD
+      # - chmod +x ./script/restoredsql.sh
+      #- bash ./script/restoredsql.sh
+      # - psql -q -h $DB_HOST -U $DB_USER -d $DB_NAME < $EXPORT_FILE
+      - echo "Imported data into existing DB instance."
+
 artifacts:
   files:
-    - sd_image/datafile/*
+    - $EXPORT_FILE
