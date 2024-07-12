@@ -5,7 +5,7 @@ env:
     variables:
     AWS_ROLE_ARN: "arn:aws:iam::073139075499:policy/sd-codecommit"
     AWS_ROLE_SESSION_NAME: "CodeBuildSession"
-    EXPORT_FILE: "db_export1.sql"
+    EXPORT_FILE: "db_export2.sql"
 
 phases:
   install:
