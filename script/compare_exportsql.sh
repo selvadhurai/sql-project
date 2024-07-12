@@ -19,7 +19,7 @@ DATA_DIFF_FILE="data_diff.sql"
 # mkdir -p $EXPORT_DIR
 # Check if the database is ready
 pg_isready -h "$CURRENT_DB_HOST" -p "$CURRENT_DB_PORT" -U "$CURRENT_DB_USER" -d "$CURRENT_DB_NAME"
-pg_isready -h "$PREVIOUS_DB_HOST" -p "$PREVIOUS_DB_PORT" -U "$PREVIOUS_DB_USER" -d "$PREVIOUS_DB_NAME"
+pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME"
 # Export current and previous databases
 echo "Exporting current database..."
 export PGPASSWORD=$CURRENT_DB_PASSWORD
@@ -33,12 +33,12 @@ if ! pg_dump -a -h $CURRENT_DB_HOST -U $CURRENT_DB_USER -d $CURRENT_DB_NAME > $E
 fi
 
 echo "Exporting previous database..."
-export PGPASSWORD=$PREVIOUS_DB_PASSWORD
-if ! pg_dump -s -h $PREVIOUS_DB_HOST -U $PREVIOUS_DB_USER -d $PREVIOUS_DB_NAME > $EXPORT_DIR/previous_db_schema.sql; then
+export PGPASSWORD=$DB_PASSWORD
+if ! pg_dump -s -h $DB_HOST -U $DB_USER -d $DB_NAME > $EXPORT_DIR/previous_db_schema.sql; then
   echo "Failed to export previous database schema."
   exit 1
 fi
-if ! pg_dump -a -h $PREVIOUS_DB_HOST -U $PREVIOUS_DB_USER -d $PREVIOUS_DB_NAME > $EXPORT_DIR/previous_db_data.sql; then
+if ! pg_dump -a -h $DB_HOST -U $DB_USER -d $DB_NAME > $EXPORT_DIR/previous_db_data.sql; then
   echo "Failed to export previous database data."
   exit 1
 fi
