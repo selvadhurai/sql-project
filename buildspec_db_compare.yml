@@ -34,11 +34,11 @@ phases:
       - export CURRENT_DB_NAME=$(jq -r '.CURRENT_DB_NAME' /tmp/secrets.json)
       - export CURRENT_DB_USER=$(jq -r '.CURRENT_DB_USER' /tmp/secrets.json)
       - export CURRENT_DB_PASSWORD=$(jq -r '.CURRENT_DB_PASSWORD' /tmp/secrets.json)
-      - export NEW_DB_HOST=$(jq -r '.DB_HOST' /tmp/secrets.json)
-      - export NEW_DB_PORT=$(jq -r '.DB_PORT' /tmp/secrets.json)
-      - export NEW_DB_NAME=$(jq -r '.DB_NAME' /tmp/secrets.json)
-      - export NEW_DB_USER=$(jq -r '.DB_USER' /tmp/secrets.json)
-      - export NEW_DB_PASSWORD=$(jq -r '.DB_PASSWORD' /tmp/secrets.json)
+      - export DB_HOST=$(jq -r '.DB_HOST' /tmp/secrets.json)
+      - export DB_PORT=$(jq -r '.DB_PORT' /tmp/secrets.json)
+      - export DB_NAME=$(jq -r '.DB_NAME' /tmp/secrets.json)
+      - export DB_USER=$(jq -r '.DB_USER' /tmp/secrets.json)
+      - export DB_PASSWORD=$(jq -r '.DB_PASSWORD' /tmp/secrets.json)
       - git config --global credential.helper '!aws codecommit credential-helper $@'
       - git config --global credential.UseHttpPath true
       - touch /tmp/sd-script1.log 
