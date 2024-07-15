@@ -22,6 +22,8 @@ pg_isready -h "$CURRENT_DB_HOST" -p "$CURRENT_DB_PORT" -U "$CURRENT_DB_USER" -d 
 pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME"
 # Store the output of the SQL query in a variable
 #CURRENT_DB_NAMES=$(PGPASSWORD=$CURRENT_DB_PASSWORD psql -h "$CURRENT_DB_HOST" -U "$CURRENT_DB_USER" -d postgres -t -c "SELECT datname FROM pg_database;")
+# Connect to the current database
+PGPASSWORD=$CURRENT_DB_PASSWORD psql -h $CURRENT_DB_HOST -U $CURRENT_DB_USER -d $CURRENT_DB_NAME -c "\dt"
 # Print the database names
 echo "$CURRENT_DB_NAMES"
 # Export current and previous databases
