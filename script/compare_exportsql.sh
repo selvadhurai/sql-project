@@ -20,6 +20,8 @@ DATA_DIFF_FILE="data_diff.sql"
 # Check if the database is ready
 pg_isready -h "$CURRENT_DB_HOST" -p "$CURRENT_DB_PORT" -U "$CURRENT_DB_USER" -d "$CURRENT_DB_NAME"
 pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME"
+psql -h "$CURRENT_DB_HOST" -U "$CURRENT_DB_USER" -d postgres
+SELECT datname FROM pg_database;
 # Export current and previous databases
 echo "Exporting current database..."
 export PGPASSWORD=$CURRENT_DB_PASSWORD
